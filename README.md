@@ -1,5 +1,7 @@
-# ICT3204
 
+
+# ICT3204
+### Vagrant Version: Vagrant 2.3.0
 ## start vagrant environment
 ``` 
 vagrant up <name|id>
