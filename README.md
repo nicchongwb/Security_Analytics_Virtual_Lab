@@ -14,4 +14,6 @@ vagrant ssh <name|id>
 ``` 
 
 ## stop vagrant environment
-```  vagrant stop ``` 
+``` 
+vagrant halt 
+``` 
