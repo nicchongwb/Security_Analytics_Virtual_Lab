@@ -4,16 +4,24 @@
 ### Vagrant Version: Vagrant 2.3.0
 ## start vagrant environment
 ``` 
-vagrant up <name|id>
+vagrant up | vagrant up <name|id>
 ```
 
 
 ## ssh into machine
 ``` 
-vagrant ssh <name|id>
+vagrant ssh | vagrant ssh <name|id>
 ``` 
 
-## stop vagrant environment
+## destroy vagrant environment
 ``` 
-vagrant halt 
+vagrant destroy 
 ``` 
+
+## reload vagrantfile | reload with provision
+``` 
+vagrant reload | vagrant reload --provision
+``` 
+
+
+
