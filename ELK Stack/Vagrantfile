@@ -1,0 +1,17 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/ubuntu2104"
+  config.vm.provider :virtualbox do |vb|
+    vb.memory = 3072
+    vb.cpus = 1
+  end
+
+  config.vm.define "elasticsearch" do |elasticsearch|
+    elasticsearch.vm.network "private_network", ip: "192.168.56.111"
+    elasticsearch.vm.provision :shell, path: "elasticsearch-provision.sh"
+  end
+
+
+end
