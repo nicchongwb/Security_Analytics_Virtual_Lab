@@ -2,16 +2,30 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
+
+  # Configure VM
   config.vm.box = "generic/ubuntu2104"
+  config.vm.network "public_network"
+
+  # Configure provisioning
+  config.vm.provision "shell", path: "elk_bootstrap.sh"
+  config.vm.synced_folder "./", "/vagrant"
+
+  # Configure network ports
+  config.vm.network "forwarded_port", host: 9200, guest: 9200 # Elasticsearch (For HTTP)
+  config.vm.network "forwarded_port", host: 9300, guest: 9300 # Elasticsearch (For transport)
+  config.vm.network "forwarded_port", host: 5044, guest: 5044 # Logstash
+  config.vm.network "forwarded_port", host: 5601, guest: 5601 # Kibana
+
   config.vm.provider :virtualbox do |vb|
-    vb.memory = 3072
+    vb.name = "ELK_Ubuntu"
+    vb.memory = 4096
     vb.cpus = 1
   end
 
-  config.vm.define "elasticsearch" do |elasticsearch|
-    elasticsearch.vm.network "private_network", ip: "192.168.56.111"
-    elasticsearch.vm.provision :shell, path: "elasticsearch-provision.sh"
-  end
-
+  # config.vm.define "elasticsearch" do |elasticsearch|
+  #   elasticsearch.vm.network "private_network", ip: "192.168.56.111"
+  #   elasticsearch.vm.provision :shell, path: "elasticsearch-provision.sh"
+  # end
 
 end
