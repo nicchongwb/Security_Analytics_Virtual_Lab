@@ -27,6 +27,7 @@ echo "[*] Copying Elasticsearch config and restarting daemon..."
 cp /vagrant/configs/elasticsearch/elasticsearch.yml /etc/elasticsearch/ &> /dev/null
 sudo /bin/systemctl daemon-reload &> /dev/null
 sudo /bin/systemctl enable elasticsearch.service &> /dev/null
+sudo sed -i -e 's/TimeoutStartSec=75/TimeoutStartSec=300/g' /usr/lib/systemd/system/elasticsearch.service &> /dev/null
 sudo /bin/systemctl start elasticsearch.service &> /dev/null
 echo "[+] Elasticsearch service started"
 
@@ -44,7 +45,7 @@ echo "[+] Logstash service started"
 
 # Install Kibana
 echo "[*] Installing Kibana..."
-sudo apt-get install -y kibana=$ELK_VERSION &> /dev/null
+sudo apt-get -y install kibana=$ELK_VERSION &> /dev/null
 echo "[+] Installation of Kibana completed"
 
 # Copy Kibana config and restart daemon

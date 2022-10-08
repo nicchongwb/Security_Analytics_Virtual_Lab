@@ -14,4 +14,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell",
   path: "init.sh"
+
+  config.vm.provision "shell",
+  path: "setup_filebeat.sh"
 end
