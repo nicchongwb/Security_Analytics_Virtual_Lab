@@ -6,7 +6,7 @@ echo "apt-get update..."
 sudo apt-get -qq update > /dev/null 2>&1
 
 echo "install apache2..."
-sudo apt-get install -yqq apache2 > /dev/null 2>&1     
+sudo apt-get install -yqq apache2 > /dev/null 2>&1
 
 echo "add php repository..."
 sudo add-apt-repository ppa:ondrej/php > /dev/null 2>&1
@@ -16,6 +16,9 @@ sudo apt-get -qq update > /dev/null 2>&1
 
 echo "Install php libraries..."
 sudo apt install -yqq php7.4 php7.4-imagick php7.4-fpm php7.4-mysql php7.4-common php7.4-gd php7.4-imap php7.4-json php7.4-curl php7.4-zip php7.4-xml php7.4-mbstring php7.4-bz2 php7.4-intl php7.4-gmp libapache2-mod-php7.4 > /dev/null 2>&1
+
+echo "Install gcc..." # Required for privilege escalation
+sudo apt install -yqq gcc > /dev/null 2>&1
 
 echo "installing composer, downloading and setting up SuiteCRM v7.10.35..."
 wget https://getcomposer.org/download/1.8.1/composer.phar > /dev/null 2>&1
