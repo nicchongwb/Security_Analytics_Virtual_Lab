@@ -20,16 +20,16 @@ sudo apt install -yqq php7.4 php7.4-imagick php7.4-fpm php7.4-mysql php7.4-commo
 echo "Install gcc..." # Required for privilege escalation
 sudo apt install -yqq gcc > /dev/null 2>&1
 
-echo "installing composer, downloading and setting up SuiteCRM v7.10.35..."
+echo "installing composer, downloading and setting up SuiteCRM v7.11.15..."
 wget https://getcomposer.org/download/1.8.1/composer.phar > /dev/null 2>&1
 mv composer.phar /usr/local/bin/composer
 sudo chown www-data:www-data /usr/local/bin/composer
 sudo chmod 655 /usr/local/bin/composer
 sudo chmod +x /usr/local/bin/composer
-sudo wget https://github.com/salesagility/SuiteCRM/archive/v7.10.35.zip > /dev/null 2>&1
-sudo unzip v7.10.35.zip -d /var/www/html/ > /dev/null 2>&1
+sudo wget https://github.com/salesagility/SuiteCRM/archive/v7.11.15.zip > /dev/null 2>&1
+sudo unzip v7.11.15.zip -d /var/www/html/ > /dev/null 2>&1
 cd /var/www/html
-sudo mv SuiteCRM-7.10.35 suitecrm
+sudo mv SuiteCRM-7.11.15 suitecrm
 composer install --working-dir=/var/www/html/suitecrm/ > /dev/null 2>&1
 sudo cp /vagrant/config_si.php /var/www/html/suitecrm/ 
 sudo chown -R www-data:www-data suitecrm
