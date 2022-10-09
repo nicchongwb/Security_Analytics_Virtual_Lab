@@ -6,6 +6,14 @@ Vagrant.configure("2") do |config|
   # for other providers, cant be use on hyper-v
   config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
 
+  config.vm.provision "docker" do |d|
+    #attacker machine
+    d.pull_images "kalilinux/kali-rolling"
+    d.run "kali", image: "kalilinux/kali-rolling",
+      cmd: "/bin/bash",
+      args: "-ti"
+  end
+  
   config.vm.provision "shell",
   path: "init_mysql.sh"
 
