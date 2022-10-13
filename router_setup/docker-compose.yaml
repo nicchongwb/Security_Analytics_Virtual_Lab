@@ -1,0 +1,73 @@
+# docker compose up -d
+version: '2.10'
+
+services:
+  # SuiteCRM
+  c1:
+    build:
+      context: .
+      target: ubuntu-network
+    container_name: c1
+    privileged: true
+    network_mode: "none"
+    tty: true
+    stdin_open: true
+
+  # TA1
+  c2:
+    build:
+      context: .
+      target: ubuntu-network
+    container_name: c2
+    privileged: true
+    network_mode: "none"
+    stdin_open: true
+    tty: true
+
+  # ELK
+  c3:
+    build:
+      context: .
+      target: ubuntu-network
+    container_name: c3
+    privileged: true
+    network_mode: "none"
+    stdin_open: true
+    tty: true
+
+  # TA2 - Kali:
+  c4:
+    build:
+      context: .
+      target: kali-linux
+    container_name: c4
+    privileged: true
+    network_mode: "none"
+    environment:
+      PG_SERVICE: postgresql@13-main
+    cap_add:
+      - NET_ADMIN
+    stdin_open: true
+    tty: true
+
+  # Internal Router
+  r1:
+    build:
+      context: .
+      target: ubuntu-network
+    container_name: r1
+    privileged: true
+    network_mode: "none"
+    tty: true
+    stdin_open: true
+
+  # DMZ Router
+  r2:
+    build:
+      context: .
+      target: ubuntu-network
+    container_name: r2
+    privileged: true
+    network_mode: "none"
+    tty: true
+    stdin_open: true
