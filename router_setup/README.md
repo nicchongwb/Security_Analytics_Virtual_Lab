@@ -1,16 +1,15 @@
+# Network w/ Docker Topology Setup
 ```bash
-# Build image for ubuntu-network
-sudo docker build -t ubuntu-network .
+chmod +x setup.sh ping_test.sh teardown.sh
 
-# Docker compose up in detached mode
-sudo docker compose up -d 
+# Setup networking for containers - includes docker compose up -d
+sudo ./setup.sh
 
-# Setup networking for containers (this does not rely on docker's native networking but instead rely on the Host OS)
-sudo ./network_setup.sh
+# Run ping test
+sudo ./ping_test.sh
 
-# Teardown
-sudo docker compoose down
-sudo ./network_teardown
+# Teardown - includes docker compose down at the end
+sudo ./teardown.sh
 
 # Utility
 ## Testing r1 routing
@@ -19,5 +18,8 @@ sudo docker exec -it r1 bash
 tcpdump -i any
 
 ### Ping c1 to c2 and observe tcpdump in r1
-sudo docker exec -it c1 ping -c 4 192.168.11.2
+sudo docker exec -it c1 ping -c 4 192.168.10.2
 ```
+
+# Network Topology
+![](./topology.png)
