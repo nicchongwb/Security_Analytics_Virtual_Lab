@@ -1,0 +1,28 @@
+# docker compose up -d
+version: '2.10'
+
+services:
+  c1:
+    image: ubuntu-network
+    container_name: c1
+    privileged: true
+    network_mode: "none"
+    tty: true
+    stdin_open: true
+
+  c2:
+    image: ubuntu-network
+    container_name: c2
+    privileged: true
+    network_mode: "none"
+    stdin_open: true
+    tty: true
+
+
+  r1:
+    image: ubuntu-network
+    container_name: r1
+    privileged: true
+    network_mode: "none"
+    tty: true
+    stdin_open: true
