@@ -7,22 +7,22 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
 
   config.vm.provision "docker" do |d|
-    #attacker machine
-    d.pull_images "kalilinux/kali-rolling"
-    d.run "kali", image: "kalilinux/kali-rolling",
-      cmd: "/bin/bash",
-      args: "-ti"
+    d.build_image "/vagrant/Suitecrm/", args: "-t suitecrm_server"
+    d.run "suitecrm_server",
+      args: "-dti -p '80:80'"
   end
-  
-  config.vm.provision "shell",
-  path: "init_mysql.sh"
+  # config.vm.provision "docker_compose",
+  # yml: "//docker-compose.yml", rebuild: true, run: "always"
 
-  config.vm.provision "shell",
-  path: "init_db.sh"
+  # config.vm.provision "shell",
+  # path: "init_mysql.sh"
 
-  config.vm.provision "shell",
-  path: "init.sh"
+  # config.vm.provision "shell",
+  # path: "init_db.sh"
 
-  config.vm.provision "shell",
-  path: "setup_filebeat.sh"
+  # config.vm.provision "shell",
+  # path: "init.sh"
+
+  # config.vm.provision "shell",
+  # path: "setup_filebeat.sh"
 end
