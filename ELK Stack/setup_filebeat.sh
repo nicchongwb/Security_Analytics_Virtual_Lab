@@ -3,7 +3,7 @@
 export DEBIAN_FRONTEND="noninteractive"
 
 # Initialize version of ELK stack
-ELK_VERSION="8.4.2"
+ELK_VERSION="8.4.3"
 
 # Import Elastic PGP key and repository
 echo "[*] Importing Elastic PGP key..."
@@ -19,7 +19,7 @@ echo "[+] Installation of Filebeat completed"
 
 # Copy Filebeat config and restart daemon
 echo "[*] Copying Filebeat config and restarting daemon..."
-cp /vagrant/ELK\ Stack/configs/filebeat/filebeat.yml /etc/filebeat/ &> /dev/null
+cp /vagrant/configs/filebeat/filebeat.yml /etc/filebeat/ &> /dev/null
 sudo /bin/systemctl daemon-reload &> /dev/null
 sudo /bin/systemctl enable filebeat.service &> /dev/null
 sudo /bin/systemctl start filebeat.service &> /dev/null

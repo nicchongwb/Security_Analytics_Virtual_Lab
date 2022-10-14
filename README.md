@@ -1,36 +1,25 @@
-# ICT3204
-
-## Setup Environment
-1. Virtualbox
-2. Vagrant Version: Vagrant 2.3.0
-s
+# Network w/ Docker Topology Setup
 ```bash
-vagrant plugin list
-vagrant plugin install vagrant-docker-compose
+chmod +x setup.sh ping_test.sh teardown.sh
+
+# Setup networking for containers - includes docker compose up -d
+sudo ./setup.sh
+
+# Run ping test
+sudo ./ping_test.sh
+
+# Teardown - includes docker compose down at the end
+sudo ./teardown.sh
+
+# Utility
+## Testing r1 routing
+### TCP dump in r1
+sudo docker exec -it r1 bash
+tcpdump -i any
+
+### Ping c1 to c2 and observe tcpdump in r1
+sudo docker exec -it c1 ping -c 4 192.168.10.2
 ```
 
-## Running vagrant
-```bash
-# Start Vagrantfile
-vagrant up
-vagrant up <name|id>
-
-# SSH into machine
-vagrant ssh 
-vagrant ssh <name|id>
-
-# Destroy vagrant
-vagrant destroy
-
-# Reload Vagrantfile
-vagrant reload
-vagrant reload --provision
-```
-
-## Network Topology
-![](./router_setup/topology.png)
-
-TA1:
-- Linux Kernel 5.11: CVE-2022-0847 
-- SuiteCRM v7.11.15: CVE-2020-28328
-- SuiteCRM Credentials: `admin:admin`
+# Network Topology
+![](./topology.png)
