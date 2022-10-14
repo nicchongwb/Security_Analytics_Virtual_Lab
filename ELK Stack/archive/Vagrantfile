@@ -5,31 +5,27 @@ Vagrant.configure("2") do |config|
 
   # Configure VM
   config.vm.box = "generic/ubuntu2104"
-  
-  #Configure Networking
+  config.vm.network "public_network", ip: "192.168.1.8" # Change IP address accordingly
 
-  config.vm.network "public_network", ip: "192.168.1.201"
-  
-  #Configure the current project folder to be included
+  # Configure provisioning
+  config.vm.provision "shell", path: "elk_bootstrap.sh"
   config.vm.synced_folder "./", "/vagrant"
- 
-  #Configure network ports
+
+  # Configure network ports
   config.vm.network "forwarded_port", host: 9200, guest: 9200 # Elasticsearch (For HTTP)
   config.vm.network "forwarded_port", host: 9300, guest: 9300 # Elasticsearch (For transport)
   config.vm.network "forwarded_port", host: 5044, guest: 5044 # Logstash
   config.vm.network "forwarded_port", host: 5601, guest: 5601 # Kibana
 
-  config.vm.provision "shell", path: "sysctl.sh", run: "always" #Change mmap counts to ensure virtual memory does not run out during installation
-
   config.vm.provider :virtualbox do |vb|
-    vb.name = "SA_ELK_Ubuntu"
+    vb.name = "ELK_Ubuntu"
     vb.memory = 4096
     vb.cpus = 1
-   
   end
 
-  # Provisioning to pull Ubuntu images
-  config.vm.provision :docker
-  config.vm.provision :docker_compose, yml: "/vagrant/docker-compose.yml", run: "always"
-  
+  # config.vm.define "elasticsearch" do |elasticsearch|
+  #   elasticsearch.vm.network "private_network", ip: "192.168.56.111"
+  #   elasticsearch.vm.provision :shell, path: "elasticsearch-provision.sh"
+  # end
+
 end

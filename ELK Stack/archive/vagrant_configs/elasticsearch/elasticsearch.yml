@@ -30,13 +30,11 @@ node.name: ict3204cluster-node-1
 #
 # Path to directory where to store the data (separate multiple locations by comma):
 #
-path.data: /usr/share/elasticsearch/data
-#path.data: /var/lib/elasticsearch
+path.data: /var/lib/elasticsearch
 #
 # Path to log files:
 #
-path.logs: /usr/share/elasticsearch
-#path.logs: /var/log/elasticsearch
+path.logs: /var/log/elasticsearch
 #
 # ----------------------------------- Memory -----------------------------------
 #
@@ -53,7 +51,7 @@ path.logs: /usr/share/elasticsearch
 # ---------------------------------- Network -----------------------------------
 #
 # Set the bind address to a specific IP (IPv4 or IPv6):
-# If you bind-mount a custom elasticsearch.yml file, ensure it includes the network.host: 0.0.0.0 setting
+#
 network.host: 0.0.0.0
 #
 # Set a custom port for HTTP:
