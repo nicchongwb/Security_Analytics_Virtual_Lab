@@ -6,7 +6,7 @@ services:
   c1:
     build:
       context: .
-      target: suitecrm-server
+      target: ubuntu-network
     container_name: c1
     privileged: true
     network_mode: "none"
@@ -24,15 +24,42 @@ services:
     stdin_open: true
     tty: true
 
-
-  # ELK
+  # Elastic
   c3:
     build:
       context: .
       target: ubuntu-network
     container_name: c3
     privileged: true
-    network_mode: "none"
+    networks: 
+      elk_nw:
+        ipv4_address: 192.168.30.3
+    stdin_open: true
+    tty: true
+
+  # Logstach
+  c5:
+    build:
+      context: .
+      target: ubuntu-network
+    container_name: c5
+    privileged: true
+    networks: 
+      elk_nw:
+        ipv4_address: 192.168.30.4
+    stdin_open: true
+    tty: true
+
+  # Kibana
+  c6:
+    build:
+      context: .
+      target: ubuntu-network
+    container_name: c6
+    privileged: true
+    networks: 
+      elk_nw:
+        ipv4_address: 192.168.30.5
     stdin_open: true
     tty: true
 
@@ -73,7 +100,27 @@ services:
     tty: true
     stdin_open: true
 
+  # Monitoring Router
+  r3:
+    build:
+      context: .
+      target: ubuntu-network
+    container_name: r3
+    privileged: true
+    networks: 
+      elk_nw:
+        ipv4_address: 192.168.30.2
+    tty: true
+    stdin_open: true
+
 networks:
   host_nw:
     name: host_nw
     driver: bridge
+  elk_nw:
+    name: elk_nw
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.30.0/24
