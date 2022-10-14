@@ -1,35 +1,36 @@
 # ICT3204
 
-## Vagrant Environment
-
-Vagrant Version: Vagrant 2.3.0
-
-### 1. Web Server - Ubuntu v21.04
-
-- linux kernel - 5.11
-
-- installed with suiteCRM v7.10.35
-
-## SuiteCRM
-
-browse to `http://<IP-Address>/suitecrm/` and login with `Admin:Admin`
-
-## start vagrant environment
-```
-vagrant up | vagrant up <name|id>
+## Setup Environment
+1. Virtualbox
+2. Vagrant Version: Vagrant 2.3.0
+s
+```bash
+vagrant plugin list
+vagrant plugin install vagrant-docker-compose
 ```
 
-## ssh into machine
-```
-vagrant ssh | vagrant ssh <name|id>
-```
+## Running vagrant
+```bash
+# Start Vagrantfile
+vagrant up
+vagrant up <name|id>
 
-## destroy vagrant environment
-```
+# SSH into machine
+vagrant ssh 
+vagrant ssh <name|id>
+
+# Destroy vagrant
 vagrant destroy
+
+# Reload Vagrantfile
+vagrant reload
+vagrant reload --provision
 ```
 
-## reload vagrantfile | reload with provision
-```
-vagrant reload | vagrant reload --provision
-```
+## Network Topology
+![](./router_setup/topology.png)
+
+TA1:
+- Linux Kernel 5.11: CVE-2022-0847 
+- SuiteCRM v7.11.15: CVE-2020-28328
+- SuiteCRM Credentials: `admin:admin`
