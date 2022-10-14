@@ -6,7 +6,7 @@ services:
   c1:
     build:
       context: .
-      target: ubuntu-network
+      target: suitecrm-server
     container_name: c1
     privileged: true
     network_mode: "none"
@@ -23,6 +23,7 @@ services:
     network_mode: "none"
     stdin_open: true
     tty: true
+
 
   # ELK
   c3:
@@ -71,3 +72,8 @@ services:
     network_mode: "none"
     tty: true
     stdin_open: true
+
+networks:
+  host_nw:
+    name: host_nw
+    driver: bridge

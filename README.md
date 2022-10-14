@@ -1,41 +1,25 @@
-# ICT3204
-
-## Vagrant Environment
-
-Vagrant Version: Vagrant 2.3.0
-
-### 1. Web Server - Ubuntu v21.04
-
-- linux kernel - 5.11
-
-- installed with suiteCRM v7.10.35
-
-## SuiteCRM
-
-browse to `http://<IP-Address>/suitecrm/` and login with `Admin:Admin`
-
-## Vagrant Prerequisite
-### Install the following plugin before using docker_compose on Vagrant
+# Network w/ Docker Topology Setup
 ```bash
-vagrant plugin install vagrant-docker-compose
+chmod +x setup.sh ping_test.sh teardown.sh
+
+# Setup networking for containers - includes docker compose up -d
+sudo ./setup.sh
+
+# Run ping test
+sudo ./ping_test.sh
+
+# Teardown - includes docker compose down at the end
+sudo ./teardown.sh
+
+# Utility
+## Testing r1 routing
+### TCP dump in r1
+sudo docker exec -it r1 bash
+tcpdump -i any
+
+### Ping c1 to c2 and observe tcpdump in r1
+sudo docker exec -it c1 ping -c 4 192.168.10.2
 ```
 
-## start vagrant environment
-```
-vagrant up | vagrant up <name|id>
-```
-
-## ssh into machine
-```
-vagrant ssh | vagrant ssh <name|id>
-```
-
-## destroy vagrant environment
-```
-vagrant destroy
-```
-
-## reload vagrantfile | reload with provision
-```
-vagrant reload | vagrant reload --provision
-```
+# Network Topology
+![](./topology.png)

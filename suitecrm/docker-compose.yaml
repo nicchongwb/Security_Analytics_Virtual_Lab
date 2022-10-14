@@ -1,0 +1,17 @@
+# docker compose up -d
+version: '2.10'
+
+services:
+  # SuiteCRM
+  c1:
+    user: root
+    build:
+      context: .
+      target: suitecrm-server
+    container_name: c1
+    privileged: true
+    # network_mode: "none"
+    tty: true
+    stdin_open: true
+    ports:
+      - "8888:80"
