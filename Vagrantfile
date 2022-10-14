@@ -11,18 +11,4 @@ Vagrant.configure("2") do |config|
     d.run "suitecrm_server",
       args: "-dti -p '80:80'"
   end
-  # config.vm.provision "docker_compose",
-  # yml: "/vagrant/router_setup/docker-compose.yaml", rebuild: true, run: "always"
-
-  # config.vm.provision "shell",
-  # path: "init_mysql.sh"
-
-  # config.vm.provision "shell",
-  # path: "init_db.sh"
-
-  # config.vm.provision "shell",
-  # path: "init.sh"
-
-  # config.vm.provision "shell",
-  # path: "setup_filebeat.sh"
 end

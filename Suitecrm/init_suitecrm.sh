@@ -38,10 +38,7 @@ wget https://github.com/salesagility/SuiteCRM/archive/v7.11.15.zip > /dev/null 2
 unzip v7.11.15.zip -d /var/www/html/ > /dev/null 2>&1
 mv /var/www/html/SuiteCRM-7.11.15 /var/www/html/suitecrm
 composer install --working-dir=/var/www/html/suitecrm/ > /dev/null 2>&1
-cp config_si.php /var/www/html/suitecrm/ 
+mv config_si.php /var/www/html/suitecrm/ 
 chown -R www-data:www-data /var/www/html/suitecrm
-echo "Running SuiteCRM Web Installer..."
-# curl "http://127.0.0.1/suitecrm/install.php?goto=SilentInstall&cli=true" > /dev/null 2>&1 && echo "SuiteCRM installed successfully!"
 
-# echo "finished Installation./nProvider: Hyper-v - perform curl http://<IP_address>/suitecrm/install.php?goto=SilentInstall&cli=true to complete installation./n Upon successful installation, proceed to http://<VM_IP_address>/suitecrm to login.\n\n Provider: VirtualBox - Visit http://127.0.0.1:8080/suitecrm to login"
 
