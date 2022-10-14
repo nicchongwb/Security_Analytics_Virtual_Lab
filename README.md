@@ -14,6 +14,12 @@ Vagrant Version: Vagrant 2.3.0
 
 browse to `http://<IP-Address>/suitecrm/` and login with `Admin:Admin`
 
+## Vagrant Prerequisite
+### Install the following plugin before using docker_compose on Vagrant
+```bash
+vagrant plugin install vagrant-docker-compose
+```
+
 ## start vagrant environment
 ```
 vagrant up | vagrant up <name|id>
