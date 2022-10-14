@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
       args: "-dti -p '80:80'"
   end
   # config.vm.provision "docker_compose",
-  # yml: "//docker-compose.yml", rebuild: true, run: "always"
+  # yml: "/vagrant/router_setup/docker-compose.yaml", rebuild: true, run: "always"
 
   # config.vm.provision "shell",
   # path: "init_mysql.sh"
