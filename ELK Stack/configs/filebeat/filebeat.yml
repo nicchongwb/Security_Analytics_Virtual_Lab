@@ -20,20 +20,12 @@ filebeat.inputs:
 
 # filestream is an input for collecting log messages from files.
 - type: log
-
-  # Unique ID among all inputs, an ID is required.
-  # id: my-filestream-id
-
   # Change to true to enable this input configuration.
   enabled: true
-
   # Paths that should be crawled and fetched. Glob based paths.
   paths:
     - /var/log/apache2/access.log
-  
-  # Tag for Apache Access Log
-  tags: ["apache"]
-
+    tags: ["apache"]
 
 # For syslog
 - type: log
