@@ -7,7 +7,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
         jq          traceroute      ssh         ssh-askpass \
         python3     python3-pip     virtualenv  inetutils-ping \
         unzip       zip             make        vim \
-        iproute2    iptables        tcpdump \
+        iproute2    iptables        tcpdump     openvpn \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
@@ -17,7 +17,7 @@ RUN apt update -y
 RUN apt install -y \ 
         mc          curl        iptables    inetutils-ping \    
         net-tools   procps      vim         openjdk-11-jre-headless \
-        ssh         tcpdump     nmap
+        ssh         tcpdump     nmap        openvpn
 RUN apt install -y python3 metasploit-framework
 ADD https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py /bin/systemctl
 RUN chmod +x /bin/systemctl
