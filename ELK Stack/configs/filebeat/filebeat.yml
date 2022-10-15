@@ -34,6 +34,21 @@ filebeat.inputs:
   # Tag for Apache Access Log
   tags: ["apache"]
 
+
+# For syslog
+- type: log
+  enabled: true
+  paths:
+    - /var/log/syslog
+  tags: ["syslog"]
+
+# For auth.log
+- type: log
+  enabled: true
+  paths:
+    - /var/log/auth.log
+  tags: ["auth"]
+
   # Exclude lines. A list of regular expressions to match. It drops the lines that are
   # matching any regular expression from the list.
   # Line filtering happens after the parsers pipeline. If you would like to filter lines
@@ -107,7 +122,7 @@ setup.template.settings:
 
 # Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
 # This requires a Kibana endpoint configuration.
-setup.kibana:
+# setup.kibana:
 
   # Kibana Host
   # Scheme and port can be left out and will be set to the default (http and 5601)
