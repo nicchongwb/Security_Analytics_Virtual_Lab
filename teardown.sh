@@ -21,16 +21,16 @@ r3_id=$(docker ps --format '{{.ID}}' --filter name=r3)
 echo "r3_id=${r3_id}"
 
 echo '[+] Removing softlinks created...'
-rm /var/run/netns/*
-# rm /var/run/netns/$c1_id
-# rm /var/run/netns/$c2_id
-# rm /var/run/netns/$c3_id
-# rm /var/run/netns/$c4_id
-# rm /var/run/netns/$c5_id
-# rm /var/run/netns/$c6_id
-# rm /var/run/netns/$r1_id
-# rm /var/run/netns/$r2_id
-# rm /var/run/netns/$r3_id
+# rm /var/run/netns/*
+rm /var/run/netns/$c1_id
+rm /var/run/netns/$c2_id
+rm /var/run/netns/$c3_id
+rm /var/run/netns/$c4_id
+rm /var/run/netns/$c5_id
+rm /var/run/netns/$c6_id
+rm /var/run/netns/$r1_id
+rm /var/run/netns/$r2_id
+rm /var/run/netns/$r3_id
 
 echo '[+] Docker compose down...' 
 docker compose down

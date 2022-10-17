@@ -1,5 +1,36 @@
+# Setup Environment
+1. Virtualbox
+2.Vagrant Version: Vagrant 2.3.0 s
+
+```bash
+vagrant plugin list
+vagrant plugin install vagrant-docker-compose
+```
+
+# Running vagrant
+```bash
+# Start Vagrantfile
+vagrant up
+vagrant up <name|id>
+
+# SSH into machine
+vagrant ssh 
+vagrant ssh <name|id>
+
+# Destroy vagrant
+vagrant destroy
+
+# Reload Vagrantfile
+vagrant reload
+vagrant reload --provision
+```
+
 # Network w/ Docker Topology Setup
 ```bash
+docker builder prune
+docker container prune
+docker network prune
+
 chmod +x setup.sh ping_test.sh teardown.sh
 
 # Setup networking for containers - includes docker compose up -d
