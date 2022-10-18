@@ -22,18 +22,11 @@ Vagrant.configure("2") do |config|
     v.memory = 4096
     v.cpus = 2
   end
-
-
+  
   # set up Docker in the new VM:
   config.vm.provision :docker
   
-  # Run shell script to setup VM
-  $COMMANDS = <<-'SCRIPT'
-  cd /vagrant/
-  chmod +x setup.sh
-  ./setup.sh
-  SCRIPT
-
-  config.vm.provision "shell", inline: $COMMANDS, privileged: true, run: 'always'
+  config.vm.provision "shell", privileged: true, run: 'always',
+  path: "setup.sh"
 
 end

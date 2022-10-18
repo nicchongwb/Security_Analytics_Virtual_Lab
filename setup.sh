@@ -21,22 +21,22 @@ yes | docker network prune # Prune all network before hand
 
 # # 0. Build images
 echo -e "${BGREEN}\n[+]${NC} Building ubuntu-network image...${NC}"
-docker build -t ubuntu-network -f Dockerfile.ubuntu-network .
+docker build -t ubuntu-network -f /vagrant/Dockerfile.ubuntu-network /vagrant/
 echo -e "${BGREEN}\n[+]${NC} Building kali image...${NC}" 
-docker build -t kali -f Dockerfile.kali .
+docker build -t kali -f /vagrant/Dockerfile.kali /vagrant/
 echo -e "${BGREEN}\n[+]${NC} Building suitecrm-server image...${NC}"
-docker build -t suitecrm-server -f Dockerfile.suitecrm-server .
+docker build -t suitecrm-server -f /vagrant/Dockerfile.suitecrm-server /vagrant/
 # # # 0. Build ELK Stack Containers
 echo -e "${BGREEN}\n[+]${NC} Building elastic image...${NC}"
-docker build -t elasticsearch -f Dockerfile.elastic .
+docker build -t elasticsearch -f /vagrant/Dockerfile.elastic /vagrant/
 echo -e "${BGREEN}\n[+]${NC} Building logstash image...${NC}"
-docker build -t logstash -f Dockerfile.logstash .
+docker build -t logstash -f /vagrant/Dockerfile.logstash /vagrant/
 echo -e "${BGREEN}\n[+]${NC} Building kibana image...${NC}"
-docker build -t kibana -f Dockerfile.kibana .
+docker build -t kibana -f /vagrant/Dockerfile.kibana /vagrant/
 
 # 0. Docker compose up -d
 echo -e "\n${BGREEN}[+]${NC} Running docker compose up -d --build.."
-docker compose up -d --build
+docker compose -f /vagrant/docker-compose.yaml up -d --build
 echo -e "${BGREEN}[+]${NC} Docker compose up!${NC}"
 
 
