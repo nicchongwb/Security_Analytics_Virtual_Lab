@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "generic/ubuntu2104"
   
   #Configure Networking
   config.vm.network "public_network", ip: "192.168.1.201"
@@ -13,10 +13,10 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", host: 5044, guest: 5044 # Logstash
   config.vm.network "forwarded_port", host: 5601, guest: 5601 # Kibana
 
-  config.vm.provision "shell", path: "ELK Stack/sysctl.sh", run: "always" #Change mmap counts to ensure virtual memory does not run out during installation
+  config.vm.provision "shell", path: "sysctl.sh", run: "always" #Change mmap counts to ensure virtual memory does not run out during installation
   
   config.vm.provider "virtualbox" do |v|
-    v.gui = true
+    # v.gui = true
     v.name = "ICT3204"
     v.check_guest_additions = false
     v.memory = 4096
@@ -29,7 +29,6 @@ Vagrant.configure("2") do |config|
   
   # Run shell script to setup VM
   $COMMANDS = <<-'SCRIPT'
-  cd /vagrant/router_setup/
   chmod +x setup.sh
   # ./setup.sh
   SCRIPT
