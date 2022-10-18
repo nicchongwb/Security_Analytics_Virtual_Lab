@@ -35,34 +35,76 @@ services:
 
   # Elastic
   c3:
-    image: ubuntu-network
+    image: elasticsearch
     container_name: c3
+    restart: always
     privileged: true
     networks: 
       elk_nw:
         ipv4_address: 192.168.30.3
+    volumes:
+      # Bind-mounted configuration uses elasticsearch.yml to configure Elasticsearch on Docker
+      - type: bind
+        source: ./elk_configs/elasticsearch/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: volume
+        source: elasticsearch
+        target: /usr/share/elasticsearch/data
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: admin
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks
+      # see https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
     stdin_open: true
     tty: true
 
   # Logstach
   c5:
-    image: ubuntu-network
+    image: logstash
     container_name: c5
+    restart: always
     privileged: true
     networks: 
       elk_nw:
         ipv4_address: 192.168.30.4
     stdin_open: true
     tty: true
+    volumes:
+      # Bind-mounted configuration uses logstash.conf to configure Logstash on Docker
+      - type: bind
+        source: ./elk_configs/logstash/logstash.conf
+        target: /usr/share/logstash/pipeline/logstash.conf
+        read_only: true
+    depends_on:
+      - c3
+    ports:
+      - "5044:5044"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"    
 
   # Kibana
   c6:
-    image: ubuntu-network
+    image: kibana
     container_name: c6
+    restart: always
     privileged: true
     networks: 
       elk_nw:
         ipv4_address: 192.168.30.5
+    volumes:
+      # Bind-mounted configuration uses kibana.yml to configure Kibana on Docker
+      - type: bind
+        source: ./elk_configs/kibana/kibana.yml
+        target: /etc/kibana/kibana.yml
+    ports:
+    - '5601:5601'
+    depends_on:
+      - c3
     stdin_open: true
     tty: true
 
@@ -119,3 +161,6 @@ networks:
       driver: default
       config:
         - subnet: 192.168.30.0/24
+   
+volumes: 
+  elasticsearch: 

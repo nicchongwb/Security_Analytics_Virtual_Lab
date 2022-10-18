@@ -26,6 +26,13 @@ echo -e "${BGREEN}\n[+]${NC} Building kali image...${NC}"
 docker build -t kali -f Dockerfile.kali .
 echo -e "${BGREEN}\n[+]${NC} Building suitecrm-server image...${NC}"
 docker build -t suitecrm-server -f Dockerfile.suitecrm-server .
+# # # 0. Build ELK Stack Containers
+echo -e "${BGREEN}\n[+]${NC} Building elastic image...${NC}"
+docker build -t elasticsearch -f Dockerfile.elastic .
+echo -e "${BGREEN}\n[+]${NC} Building logstash image...${NC}"
+docker build -t logstash -f Dockerfile.logstash .
+echo -e "${BGREEN}\n[+]${NC} Building kibana image...${NC}"
+docker build -t kibana -f Dockerfile.kibana .
 
 # 0. Docker compose up -d
 echo -e "\n${BGREEN}[+]${NC} Running docker compose up -d --build.."
