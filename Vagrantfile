@@ -29,6 +29,7 @@ Vagrant.configure("2") do |config|
   
   # Run shell script to setup VM
   $COMMANDS = <<-'SCRIPT'
+  cd /vagrant/
   chmod +x setup.sh
   # ./setup.sh
   SCRIPT
