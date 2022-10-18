@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
   $COMMANDS = <<-'SCRIPT'
   cd /vagrant/
   chmod +x setup.sh
-  # ./setup.sh
+  ./setup.sh
   SCRIPT
 
   config.vm.provision "shell", inline: $COMMANDS, privileged: true, run: 'always'
