@@ -353,9 +353,9 @@ chmod +x ping_test.sh
 
 # G. Setup OpenVPN tunnel between c2 and c4
 docker exec -it c2 openvpn --genkey --secret static-OpenVPN.key
-docker exec -it c2 openvpn --dev tun --ifconfig 172.16.30.1 172.16.30.2 --cipher AES-256-CBC --secret static-OpenVPN.key &
+docker-compose exec -T c2 openvpn --dev tun --ifconfig 172.16.30.1 172.16.30.2 --cipher AES-256-CBC --secret static-OpenVPN.key &
 docker exec -it c2 ufw allow from any to any port 1194 proto tcp
 docker exec -it c2 ufw allow from 172.16.30.1 to any port 22
 docker cp c2:/static-OpenVPN.key /home/kali/Desktop
 docker cp /home/kali/Desktop/static-OpenVPN.key c4:/
-docker exec -it c4 openvpn --remote 192.168.10.2 --dev tun --ifconfig 172.16.0.1 172.16.0.2 --cipher AES-256-CBC --secret static-OpenVPN.key &
+docker-compose exec -T c4 openvpn --remote 192.168.10.2 --dev tun --ifconfig 172.16.30.1 172.16.30.2 --cipher AES-256-CBC --secret static-OpenVPN.key &
