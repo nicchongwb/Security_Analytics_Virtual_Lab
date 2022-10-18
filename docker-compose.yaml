@@ -33,7 +33,7 @@ services:
     stdin_open: true
     tty: true
 
-  # Elastic
+  # Elasticsearch
   c3:
     image: elasticsearch
     container_name: c3
@@ -55,7 +55,6 @@ services:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
       ELASTIC_PASSWORD: admin
       # Use single node discovery in order to disable production mode and avoid bootstrap checks
-      # see https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
     ports:
       - "9200:9200"
@@ -63,7 +62,7 @@ services:
     stdin_open: true
     tty: true
 
-  # Logstach
+  # Logstash
   c5:
     image: logstash
     container_name: c5
