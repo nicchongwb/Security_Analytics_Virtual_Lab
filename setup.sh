@@ -346,7 +346,7 @@ echo -e "${BGREEN}[+]${NC} Running for ${GREEN}C6${NC}: ip netns exec $c6_id ${G
 ip netns exec $c6_id ip route
 
 # F. Ping test - takes some time
-chmod +x ping_test.sh
+chmod +x /vagrant/ping_test.sh
 ## Uncomment the cmd below or manually run the ping test via
 ## sudo ./ping_test.sh
 # ./ping_test.sh
