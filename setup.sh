@@ -27,7 +27,7 @@ docker build -t kali -f /vagrant/Dockerfile.kali /vagrant/
 echo -e "${BGREEN}\n[+]${NC} Building suitecrm-server image...${NC}"
 docker build -t suitecrm-server -f /vagrant/Dockerfile.suitecrm-server /vagrant/
 # # # 0. Build ELK Stack Containers
-echo -e "${BGREEN}\n[+]${NC} Building elastic image...${NC}"
+echo -e "${BGREEN}\n[+]${NC} Building elasticsearch image...${NC}"
 docker build -t elasticsearch -f /vagrant/Dockerfile.elastic /vagrant/
 echo -e "${BGREEN}\n[+]${NC} Building logstash image...${NC}"
 docker build -t logstash -f /vagrant/Dockerfile.logstash /vagrant/

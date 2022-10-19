@@ -25,7 +25,7 @@ filebeat.inputs:
   # Paths that should be crawled and fetched. Glob based paths.
   paths:
     - /var/log/apache2/access.log
-    tags: ["apache"]
+  tags: ["apache"]
 
 # For syslog
 - type: log
