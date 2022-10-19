@@ -30,8 +30,8 @@ RUN ./configure_mariadb.sh
 RUN echo "Adding DB & USER in MariaDB for SuiteCRM..."
 RUN ./init_db.sh
 # Install and configure SuiteCRM & Composer
-# RUN echo "Installing SuiteCRM & Composer..."
-# RUN ./install_suitecrm.sh
+RUN echo "Installing SuiteCRM & Composer..."
+RUN ./install_suitecrm.sh
 # Install and configure Filebeat
 RUN echo "Installing Filebeat..."
 RUN ./setup_filebeat.sh
