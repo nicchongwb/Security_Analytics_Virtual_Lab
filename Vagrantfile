@@ -8,6 +8,8 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant"
   
   #Configure network ports
+  #suitecrm-server
+  config.vm.network "forwarded_port", host: 80, guest: 80
   config.vm.network "forwarded_port", host: 9200, guest: 9200 # Elasticsearch (For HTTP)
   config.vm.network "forwarded_port", host: 9300, guest: 9300 # Elasticsearch (For transport)
   config.vm.network "forwarded_port", host: 5044, guest: 5044 # Logstash
@@ -15,13 +17,13 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", path: "sysctl.sh", run: "always" #Change mmap counts to ensure virtual memory does not run out during installation
   
-  config.vm.provider "virtualbox" do |v|
-    # v.gui = true
-    v.name = "ICT3204"
-    v.check_guest_additions = false
-    v.memory = 4096
-    v.cpus = 2
-  end
+  # config.vm.provider "virtualbox" do |v|
+  #   # v.gui = true
+  #   v.name = "ICT3204"
+  #   v.check_guest_additions = false
+  #   v.memory = 4096
+  #   v.cpus = 2
+  # end
   
   # set up Docker in the new VM:
   config.vm.provision :docker
