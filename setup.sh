@@ -353,9 +353,10 @@ chmod +x /vagrant/ping_test.sh
 
 # G. Setup OpenVPN tunnel between c2 and c4
 docker exec -it c2 openvpn --genkey --secret static-OpenVPN.key
-docker-compose exec -T c2 openvpn --dev tun --ifconfig 172.16.30.1 172.16.30.2 --cipher AES-256-CBC --secret static-OpenVPN.key &
+docker exec -it c2 echo 1 > /proc/sys/net/ipv4/ip_forward
 docker exec -it c2 ufw allow from any to any port 1194 proto tcp
-docker exec -it c2 ufw allow from 172.16.30.1 to any port 22
+docker exec -it c2 iptables -t nat -A POSTROUTING -s 172.16.30.2 -o eth0 -j MASQUERADE
 docker cp c2:/static-OpenVPN.key /home/kali/Desktop
 docker cp /home/kali/Desktop/static-OpenVPN.key c4:/
-docker-compose exec -T c4 openvpn --remote 192.168.10.2 --dev tun --ifconfig 172.16.30.1 172.16.30.2 --cipher AES-256-CBC --secret static-OpenVPN.key &
+docker exec -it c2 openvpn --config /etc/openvpn/server.conf &
+docker exec -it c4 openvpn --config /etc/openvpn/client.conf &
