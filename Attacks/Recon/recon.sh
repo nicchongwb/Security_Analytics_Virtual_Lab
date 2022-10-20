@@ -1,33 +1,15 @@
 #!/bin/bash
 
-printf "\n---- NMAP ----\n\n" > results
+echo "---- NMAP ----"
 echo "Running NMAP..."
-namp 192.168.20.0/24 10.10.10.0/24  | tail -n +5 | head -n -3 >> results
+nmap -e tun0 -sn 10.0.0.0/8 172.16-31.0.0/16 192.168.0.0/16 -oG - | awk '/Up$/{print $2}' > results
+echo "The following hosts are up..."
+cat results
 
+echo "---- enum4linux ----"
 while read line
 do
-if [[$line == *open* ]] && [[ $line == *http* ]]
-then 
-echo "Running Gobuster..."
-gobuster dir -u 192.168.20.0/24 10.10.10.0/24 -w /usr/share/wordlists/dirb/common.txt -qz > temp1
-echo "Running WhatWeb..."
-whatweb 192.168.20.0/24 10.10.10.0/24 -v > temp2
-fi
-
+echo "Running enum4linux for {$line}"
+enum4linux -a $line
 done < results
 
-if [ -e temp1 ]
-then
-printf "\n---- DIRS ----\n\n" >> results
-cat temp1 >> results
-rm temp1
-fi
-
-if [ -e temp2 ]
-then
-printf "\n---- WEB ----\n\n" >> results
-cat temp2 >> results
-rm temp2
-fi
-
-cat result
