@@ -18,5 +18,5 @@ echo "[+] Installation of Filebeat completed"
 # Copy Filebeat config and start service
 echo "[*] Copying Filebeat config and starting service..."
 cp filebeat.yml /etc/filebeat/
-/etc/init.d/filebeat start
-echo "[+] Filebeat service started"
+# /etc/init.d/filebeat start
+# echo "[+] Filebeat service started"

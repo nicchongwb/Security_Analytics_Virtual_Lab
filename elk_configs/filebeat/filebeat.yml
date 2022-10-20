@@ -160,7 +160,8 @@ setup.template.settings:
 # ------------------------------ Logstash Output -------------------------------
 output.logstash:
   # IP of Logstash
-  hosts: ["192.168.1.201:5044"]
+  # hosts: ["192.168.1.201:5044"]
+  hosts: ["192.168.30.4:5044"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications

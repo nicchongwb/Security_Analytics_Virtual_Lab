@@ -35,4 +35,4 @@ RUN ./install_suitecrm.sh
 # Install and configure Filebeat
 RUN echo "Installing Filebeat..."
 RUN ./setup_filebeat.sh
-ENTRYPOINT /etc/init.d/mariadb start && /etc/init.d/apache2 start && curl "http://127.0.0.1/suitecrm/install.php?goto=SilentInstall&cli=true" > /dev/null 2>&1 && echo "Visit http://<IP_Address/suitecrm to login" && bash
+ENTRYPOINT /etc/init.d/mariadb start && /etc/init.d/apache2 start && /etc/init.d/filebeat start && curl "http://127.0.0.1/suitecrm/install.php?goto=SilentInstall&cli=true" > /dev/null 2>&1 && echo "Visit http://<IP_Address/suitecrm to login" && bash

@@ -79,6 +79,10 @@ services:
         source: ./elk_configs/logstash/logstash.conf
         target: /usr/share/logstash/pipeline/logstash.conf
         read_only: true
+      - type: bind
+        source: ./elk_configs/logstash/logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+        read_only: true
     depends_on:
       - c3
     ports:
