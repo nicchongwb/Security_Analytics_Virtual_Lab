@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
   
   #Configure network ports
   #suitecrm-server
-  config.vm.network "forwarded_port", host: 88888, guest: 8888 # SuiteCRM
+  config.vm.network "forwarded_port", host: 8888, guest: 8888 # SuiteCRM
   config.vm.network "forwarded_port", host: 9200, guest: 9200 # Elasticsearch (For HTTP)
   config.vm.network "forwarded_port", host: 9300, guest: 9300 # Elasticsearch (For transport)
   config.vm.network "forwarded_port", host: 5044, guest: 5044 # Logstash
