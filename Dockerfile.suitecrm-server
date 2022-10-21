@@ -14,7 +14,7 @@ RUN apt-get install -y \
         python3     python3-pip     virtualenv  inetutils-ping \
         unzip       zip             make        vim \
         iproute2    iptables        tcpdump     openvpn \
-        gcc
+        gcc         syslog-ng 
 ## Install PHP
 RUN echo "Installing PHP & PHP Libraries..."
 RUN apt-get install -yqq php7.4 php7.4-imagick php7.4-fpm php7.4-mysql php7.4-common php7.4-gd php7.4-imap php7.4-json php7.4-curl php7.4-zip php7.4-xml php7.4-mbstring php7.4-bz2 php7.4-intl php7.4-gmp libapache2-mod-php7.4
@@ -32,7 +32,9 @@ RUN ./init_db.sh
 # Install and configure SuiteCRM & Composer
 RUN echo "Installing SuiteCRM & Composer..."
 RUN ./install_suitecrm.sh
+# Set SUID bit on python3.9 for privilege escalation
+RUN chmod u+s /usr/bin/python3.9
 # Install and configure Filebeat
 RUN echo "Installing Filebeat..."
 RUN ./setup_filebeat.sh
-ENTRYPOINT /etc/init.d/mariadb start && /etc/init.d/apache2 start && /etc/init.d/filebeat start && curl "http://127.0.0.1/suitecrm/install.php?goto=SilentInstall&cli=true" > /dev/null 2>&1 && echo "Visit http://<IP_Address/suitecrm to login" && bash
+ENTRYPOINT /etc/init.d/mariadb start && /etc/init.d/apache2 start && /etc/init.d/filebeat start && /etc/init.d/syslog-ng start && curl "http://127.0.0.1/suitecrm/install.php?goto=SilentInstall&cli=true" > /dev/null 2>&1 && echo "Visit http://<IP_Address/suitecrm to login" && bash
