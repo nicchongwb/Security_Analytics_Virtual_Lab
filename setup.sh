@@ -328,11 +328,13 @@ docker exec d1 bash -c 'echo -e "mode p2p\ndev tun\nport 1194\nproto tcp-server\
 docker exec d1 bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'
 docker exec d1 ufw allow from any to any port 1194 proto tcp
 docker exec d1 iptables -t nat -A POSTROUTING -s 172.16.30.2 -o eth0 -j MASQUERADE
-docker exec k1 bash -c 'echo -e "mode p2p\nremote 192.168.10.2\ndev tun\nport 1194\nproto tcp-client\nifconfig 172.16.30.2 172.16.30.1\nsecret ../../static-OpenVPN.key\ncomp-lzo\nroute-metric 15\nroute 192.168.10.0 255.255.255.0 172.16.10.1" > /etc/openvpn/client.conf'
+docker exec k1 bash -c 'echo -e "mode p2p\nremote 172.16.10.4\ndev tun\nport 1194\nproto tcp-client\nifconfig 172.16.30.2 172.16.30.1\nsecret ../../static-OpenVPN.key\ncomp-lzo\nroute 0.0.0.0 0.0.0.0 172.16.30.1" > /etc/openvpn/client.conf'
 docker cp d1:/static-OpenVPN.key /home
 docker cp /home/static-OpenVPN.key k1:/
 docker exec -dit d1 openvpn --config /etc/openvpn/server.conf 
 docker exec -dit k1 openvpn --config /etc/openvpn/client.conf
+docker exec k1 route del default
+
 #Setting filebeat on D1
 docker exec d1 bash -c 'echo "#! /bin/bash" > editfilebeat.sh'
 docker exec d1 bash -c 'echo "sed -i \"43 i - type: log\n  enabled: true\n  paths:\n    - /var/log/btmp\n  tags: [\\\"faillog\\\"]\" /etc/filebeat/filebeat.yml" >> editfilebeat.sh'
