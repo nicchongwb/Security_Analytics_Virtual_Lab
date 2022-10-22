@@ -333,3 +333,9 @@ docker cp d1:/static-OpenVPN.key /home
 docker cp /home/static-OpenVPN.key k1:/
 docker exec -dit d1 openvpn --config /etc/openvpn/server.conf 
 docker exec -dit k1 openvpn --config /etc/openvpn/client.conf
+#Setting filebeat on D1
+docker exec d1 bash -c 'echo "#! /bin/bash" > editfilebeat.sh'
+docker exec d1 bash -c 'echo "sed -i \"43 i - type: log\n  enabled: true\n  paths:\n    - /var/log/btmp\n  tags: [\\\"faillog\\\"]\" /etc/filebeat/filebeat.yml" >> editfilebeat.sh'
+docker exec d1 bash -c 'echo "sed -i \"48 i - type: log\n  enabled: true\n  paths:\n    - /var/log/wtmp\n  tags: [\\\"lastlog\\\"]\" /etc/filebeat/filebeat.yml" >> editfilebeat.sh'
+docker exec d1 bash -c 'chmod +x editfilebeat.sh'
+docker exec d1 bash -c './editfilebeat.sh'
