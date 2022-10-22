@@ -3,33 +3,83 @@ version: '2.10'
 
 services:
 # SuiteCRM
-  c1:
+  s1:
     user: root
     image: suitecrm-server
-    container_name: c1
+    container_name: s1
     privileged: true
-    network_mode: "none"
-    tty: true
+    networks: 
+      suitecrm_nw:
+        aliases: 
+          - suitecrm
+          - s1
+        ipv4_address: 10.10.10.2
     stdin_open: true
+    tty: true
     ports:
       - "8888:80"
-  # c1:
-    # build:
-    #   context: .
-    #   target: ubuntu-network
-    # container_name: c1
-    # privileged: true
-    # network_mode: "none"
-    # tty: true
-    # stdin_open: true
 
+  # SuiteCRM
+  s2:
+    image: ubuntu-network
+    container_name: s2
+    privileged: true
+    networks: 
+      suitecrm_nw:
+        aliases: 
+          - s2
+        ipv4_address: 10.10.10.3
+    stdin_open: true
+    tty: true
 
   # TA1
-  c2:
+  d1:
     image: ubuntu-network
-    container_name: c2
+    container_name: d1
     privileged: true
-    network_mode: "none"
+    networks: 
+      internet_nw:
+        aliases: 
+          - ta1
+          - d1
+        ipv4_address: 172.16.10.4
+      dev_nw:
+        aliases:
+          - ta1
+          - d1
+        ipv4_address: 192.168.10.2
+    stdin_open: true
+    tty: true
+
+  # DMZ1
+  dmz1:
+    image: ubuntu-network
+    container_name: dmz1
+    privileged: true
+    networks: 
+      dmz_nw:
+        aliases: 
+          - dmz1
+        ipv4_address: 10.10.20.2
+    stdin_open: true
+    tty: true
+
+  # TA2 - Kali:
+  k1:
+    image: kali
+    container_name: k1
+    privileged: true
+    networks: 
+      internet_nw:
+        aliases: 
+          - ta2
+          - kali
+          - k1
+        ipv4_address: 172.16.10.2
+    environment:
+      PG_SERVICE: postgresql@13-main
+    cap_add:
+      - NET_ADMIN
     stdin_open: true
     tty: true
 
@@ -41,7 +91,10 @@ services:
     privileged: true
     networks: 
       elk_nw:
-        ipv4_address: 192.168.30.3
+        aliases: 
+          - e1
+          - elasticsearch
+        ipv4_address: 192.168.30.2
     volumes:
       # Bind-mounted configuration uses elasticsearch.yml to configure Elasticsearch on Docker
       - type: bind
@@ -70,9 +123,10 @@ services:
     privileged: true
     networks: 
       elk_nw:
-        ipv4_address: 192.168.30.4
-    stdin_open: true
-    tty: true
+        aliases: 
+          - e2
+          - logstash
+        ipv4_address: 192.168.30.3
     volumes:
       # Bind-mounted configuration uses logstash.conf to configure Logstash on Docker
       - type: bind
@@ -89,8 +143,10 @@ services:
       - "5044:5044"
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"    
+    stdin_open: true
+    tty: true
 
-  # Kibana
+  # kibana
   kibana:
     image: kibana
     container_name: kibana
@@ -98,7 +154,10 @@ services:
     privileged: true
     networks: 
       elk_nw:
-        ipv4_address: 192.168.30.5
+        aliases: 
+          - e3
+          - kibana
+        ipv4_address: 192.168.30.4
     volumes:
       # Bind-mounted configuration uses kibana.yml to configure Kibana on Docker
       - type: bind
@@ -111,25 +170,28 @@ services:
     stdin_open: true
     tty: true
 
-  # TA2 - Kali:
-  c4:
-    image: kali
-    container_name: c4
-    privileged: true
-    network_mode: "none"
-    environment:
-      PG_SERVICE: postgresql@13-main
-    cap_add:
-      - NET_ADMIN
-    stdin_open: true
-    tty: true
-
   # Internal Router
   r1:
     image: ubuntu-network
     container_name: r1
     privileged: true
-    network_mode: "none"
+    networks:
+      suitecrm_nw:
+        aliases:
+          - r1
+        ipv4_address: 10.10.10.254
+      dev_nw:
+        aliases:
+          - r1
+        ipv4_address: 192.168.10.254
+      r1_r2_nw:
+        aliases:
+          - r1
+        ipv4_address: 172.16.20.3
+      r2_r3_nw:
+        aliases:
+          - r1
+        ipv4_address: 172.16.40.3
     tty: true
     stdin_open: true
 
@@ -138,25 +200,65 @@ services:
     image: ubuntu-network
     container_name: r2
     privileged: true
-    network_mode: "none"
+    networks:
+      dmz_nw:
+        aliases: 
+          - r2
+        ipv4_address: 10.10.20.254
+      internet_nw:
+        aliases: 
+          - r2
+          - dmz
+        ipv4_address: 172.16.10.3
+      r1_r2_nw:
+        aliases:
+          - r2
+          - dmz
+        ipv4_address: 172.16.20.2
     tty: true
     stdin_open: true
 
-  # Monitoring Router
+  # ELK Router
   r3:
     image: ubuntu-network
     container_name: r3
     privileged: true
-    networks: 
+    networks:
+      r2_r3_nw:
+        aliases:
+          - r3
+        ipv4_address: 172.16.40.2
       elk_nw:
-        ipv4_address: 192.168.30.2
+        aliases:
+          - r3
+        ipv4_address: 192.168.30.254
     tty: true
     stdin_open: true
 
+
 networks:
-  host_nw:
-    name: host_nw
+  suitecrm_nw:
+    name: suitecrm_nw
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.10.10.0/24
+  dmz_nw:
+    name: dmz_nw
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.10.20.0/24
+
+  dev_nw:
+    name: dev_nw
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/24
   elk_nw:
     name: elk_nw
     driver: bridge
@@ -164,6 +266,28 @@ networks:
       driver: default
       config:
         - subnet: 192.168.30.0/24
-   
+
+  internet_nw:
+    name: internet_nw
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.10.0/24
+  r1_r2_nw:
+    name: r1_r2_nw
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.20.0/24
+  r2_r3_nw:
+    name: r2_r3_nw
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.40.0/24
+
 volumes: 
   elasticsearch: 

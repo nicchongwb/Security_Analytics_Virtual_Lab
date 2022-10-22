@@ -10,74 +10,124 @@ NC="\033[0m" # No Color
 
 # F. Test ping
 echo -e "${BGREEN}\n[+]${NC} F. Commencing PING TEST...${NC}"
-# F1. Gateway ping
+## F1. Gateway ping
 echo -e "${BGREEN}[+]${NC} F1. ${GREEN}HOST-to-GATEWAY${NC} (respective) PING TEST..."
-echo -e "${BGREEN}[+]${NC} Pinging r1_eth0 from c1_eth0..."
-docker exec -it c1 ping -c 4 10.10.10.1
+### dev_nw
+#### D1
+echo -e "${BGREEN}[+]${NC} Pinging r1_eth0 from d1_eth0..."
+docker exec -it d1 ping -c 4 192.168.10.254
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r1_eth1 from c2_eth0${NC}..."
-docker exec -it c2 ping -c 4 192.168.10.1
+### suitecrm_nw
+#### S1
+echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r1_eth3 from s1_eth0${NC}..."
+docker exec -it s1 ping -c 4 10.10.10.254
+#### S2
+echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r1_eth3 from s2_eth0${NC}..."
+docker exec -it s2 ping -c 4 10.10.10.254
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r2_eth0 from c4_eth0${NC}..."
-docker exec -it c4 ping -c 4 172.16.10.1
+### elk_nw
+#### elasticsearch
+echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r3_eth0 from elasticsearch_eth0${NC}..."
+docker exec -it elasticsearch ping -c 4 192.168.30.254
+#### logstash
+echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r3_eth0 from logstash_eth0${NC}..."
+docker exec -it logstash ping -c 4 192.168.30.254
+#### kibana
+echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r3_eth0 from kibana_eth0${NC}..."
+docker exec -it kibana ping -c 4 192.168.30.254
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r2_eth1 from r1_eth3${NC}..."
-docker exec -it r1 ping -c 4 172.16.20.2
+### dmz_nw
+#### DMZ1
+echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r2_eth0 from dmz1_eth0${NC}..."
+docker exec -it dmz1 ping -c 4 10.10.20.254
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r3_eth0 from r1_eth2${NC}..."
-docker exec -it r1 ping -c 4 192.168.20.2
+### internet_nw
+#### K1
+echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r2_eth1 from k1_eth0${NC}..."
+docker exec -it k1 ping -c 4 172.16.10.3
+echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}d1_eth1 from k1_eth0${NC}..."
+docker exec -it k1 ping -c 4 172.16.10.4
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r3_tun0 from c3_tun0${NC}..."
-docker exec -it c3 ping -c 4 192.168.30.2
+## F2. FIRST-BOUND ping
+echo -e "\n${BGREEN}[+]${NC} F2. ${GREEN}FIRST-BOUND${NC} PING TEST${NC}..."
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r3_tun0 from c5_tun0${NC}..."
-docker exec -it c5 ping -c 4 192.168.30.2
+echo -e "\n${BGREEN}[+]${NC} F2.1 ${GREEN}FIRST-BOUND from dev_nw${NC} PING TEST${NC}..."
+echo -e "${BGREEN}[+]${NC} Pinging s1 from d1..."
+docker exec -it d1 ping -c 4 10.10.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s2 from d1..."
+docker exec -it d1 ping -c 4 10.10.10.3
+echo -e "${BGREEN}[+]${NC} Pinging r2 from d1..."
+docker exec -it d1 ping -c 4 172.16.20.2
+echo -e "${BGREEN}[+]${NC} Pinging r3 from d1..."
+docker exec -it d1 ping -c 4 172.16.40.2
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r3_tun0 from c6_tun0${NC}..."
-docker exec -it c6 ping -c 4 192.168.30.2
 
-## F2. Inter-subnet Host ping
-echo -e "\n${BGREEN}[+]${NC} F2. ${GREEN}INTER-SUBNET HOST-to-HOST${NC} PING TEST${NC}..."
-echo -e "${BGREEN}[+]${NC} Pinging c2 from c1..."
-docker exec -it c1 ping -c 4 192.168.10.2
+echo -e "\n${BGREEN}[+]${NC} F2.2 ${GREEN}FIRST-BOUND from dmz_nw${NC} PING TEST${NC}..."
+echo -e "${BGREEN}[+]${NC} Pinging r1 from dmz1..."
+docker exec -it dmz1 ping -c 4 172.16.20.3
+echo -e "${BGREEN}[+]${NC} Pinging k1 from dmz1..."
+docker exec -it dmz1 ping -c 4 172.16.10.2
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}c3 from c1${NC}..."
-docker exec -it c1 ping -c 4 192.168.30.3
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}c3 from c2${NC}..."
-docker exec -it c2 ping -c 4 192.168.30.3
+echo -e "\n${BGREEN}[+]${NC} F2.3 ${GREEN}FIRST-BOUND from elk_nw${NC} PING TEST${NC}..."
+echo -e "${BGREEN}[+]${NC} Pinging r1 from elasticsearch..."
+docker exec -it elasticsearch ping -c 4 172.16.40.3
+echo -e "${BGREEN}[+]${NC} Pinging r1 from logstash..."
+docker exec -it logstash ping -c 4 172.16.40.3
+echo -e "${BGREEN}[+]${NC} Pinging r1 from kibana..."
+docker exec -it kibana ping -c 4 172.16.40.3
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}c1 from c4${NC}..."
-docker exec -it c4 ping -c 4 10.10.10.2
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}c2 from c4${NC}..."
-docker exec -it c4 ping -c 4 192.168.10.2
+## F3. SECOND-BOUND ping
+cho -e "\n${BGREEN}[+]${NC} F3. ${GREEN}SECOND-BOUND ${NC} PING TEST${NC}..."
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}c1 from c4${NC}..."
-docker exec -it c4 ping -c 4 192.168.20.2
+echo -e "\n${BGREEN}[+]${NC} F3.1 ${GREEN}SECOND-BOUND from dev_nw${NC} PING TEST${NC}..."
+echo -e "${BGREEN}[+]${NC} Pinging dmz1 from d1..."
+docker exec -it d1 ping -c 4 10.10.20.2
+echo -e "${BGREEN}[+]${NC} Pinging elasticsearch from d1..."
+docker exec -it d1 ping -c 4 192.168.30.2
+echo -e "${BGREEN}[+]${NC} Pinging logstash from d1..."
+docker exec -it d1 ping -c 4 192.168.30.3
+echo -e "${BGREEN}[+]${NC} Pinging kibana from d1..."
+docker exec -it d1 ping -c 4 192.168.30.4
 
-## F3. Inter-subnet Router ping
-echo -e "\n${BGREEN}[+]${NC} F3. INTER-SUBNET HOST-to-ROUTER PING TEST${NC}..."
-echo -e "${BGREEN}[+]${NC} Pinging r2_eth0 from c1..."
-docker exec -it c1 ping -c 4 172.16.10.1
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r2_eth1 from c1${NC}..."
-docker exec -it c1 ping -c 4 172.16.20.1
+echo -e "\n${BGREEN}[+]${NC} F3.2 ${GREEN}SECOND-BOUND from dmz_nw${NC} PING TEST${NC}..."
+echo -e "${BGREEN}[+]${NC} Pinging d1 from dmz1..."
+docker exec -it dmz1 ping -c 4 192.168.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s1 from dmz1..."
+docker exec -it dmz1 ping -c 4 10.10.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s2 from dmz1..."
+docker exec -it dmz1 ping -c 4 10.10.10.3
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r2_eth0 from c2${NC}..."
-docker exec -it c2 ping -c 4 172.16.10.1
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r2_eth1 from c2${NC}..."
-docker exec -it c2 ping -c 4 172.16.20.1
+echo -e "\n${BGREEN}[+]${NC} F3.3 ${GREEN}SECOND-BOUND from elk_nw${NC} PING TEST${NC}..."
+echo -e "${BGREEN}[+]${NC} Pinging d1 from elasticsearch..."
+docker exec -it elasticsearch ping -c 4 192.168.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s1 from elasticsearch..."
+docker exec -it elasticsearch ping -c 4 10.10.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s2 from elasticsearch..."
+docker exec -it elasticsearch ping -c 4 10.10.10.3
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r2_eth0 from c3${NC}..."
-docker exec -it c3 ping -c 4 172.16.10.1
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r2_eth1 from c3${NC}..."
-docker exec -it c3 ping -c 4 172.16.20.1
 
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r1_eth0 from c4${NC}..."
-docker exec -it c4 ping -c 4 10.10.10.1
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r1_eth1 from c4${NC}..."
-docker exec -it c4 ping -c 4 192.168.10.1
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r1_eth2 from c4${NC}..."
-docker exec -it c4 ping -c 4 192.168.20.1
-echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r1_eth3 from c4${NC}..."
-docker exec -it c4 ping -c 4 172.16.20.1
+echo -e "\n${BGREEN}[+]${NC} Pinging d1 from logstash..."
+docker exec -it logstash ping -c 4 192.168.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s1 from logstash..."
+docker exec -it logstash ping -c 4 10.10.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s2 from logstash..."
+docker exec -it logstash ping -c 4 10.10.10.3
+
+
+echo -e "\n${BGREEN}[+]${NC} Pinging d1 from kibana..."
+docker exec -it kibana ping -c 4 192.168.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s1 from kibana..."
+docker exec -it kibana ping -c 4 10.10.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s2 from kibana..."
+docker exec -it kibana ping -c 4 10.10.10.3
+
+
+echo -e "\n${BGREEN}[+]${NC} F3.1 ${GREEN}THIRD-BOUND from dmz_nw${NC} PING TEST${NC}..."
+echo -e "${BGREEN}[+]${NC} Pinging elasticsearch from dmz1..."
+docker exec -it dmz1 ping -c 4 192.168.30.2
+echo -e "${BGREEN}[+]${NC} Pinging logstash from dmz1..."
+docker exec -it dmz1 ping -c 4 192.168.30.3
+echo -e "${BGREEN}[+]${NC} Pinging kibana from dmz1..."
+docker exec -it dmz1 ping -c 4 192.168.30.4

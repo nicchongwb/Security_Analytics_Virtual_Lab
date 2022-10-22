@@ -1,364 +1,323 @@
 #!/bin/bash
 # This script is meant to be run on the host OS
+# Run this after docker compose up
 # RUN in root
 # ./setup.sh
 
+BLUE="\033[1;34m"
 RED="\033[0;31m"
 GREEN="\033[0;32m"
 BGREEN="\033[1;32m"
 NC="\033[0m" # No Color
 
 
-echo -e "${BGREEN}\n[+]${NC} Prunning all docker volumes...${NC}"
-yes | docker volume prune
-echo -e "${BGREEN}\n[+]${NC} Prunning all docker containers...${NC}"
-yes | docker container prune # Prune all container before hand
-echo -e "${BGREEN}\n[+]${NC} Prunning all docker networks...${NC}"
-yes | docker network prune # Prune all network before hand
-## Do not uncomment this - it will remove all the builder cache which will cause the rebuilding/building images to be long
-# echo -e "${BGREEN}\n[+]${NC} Prunning all docker builder cache...${NC}"
-# yes | docker builder prune # Prune all builder before hand
-
-# # 0. Build images
-echo -e "${BGREEN}\n[+]${NC} Building ubuntu-network image...${NC}"
-docker build -t ubuntu-network -f /vagrant/Dockerfile.ubuntu-network /vagrant/
-echo -e "${BGREEN}\n[+]${NC} Building kali image...${NC}" 
-docker build -t kali -f /vagrant/Dockerfile.kali /vagrant/
-echo -e "${BGREEN}\n[+]${NC} Building suitecrm-server image...${NC}"
-docker build -t suitecrm-server -f /vagrant/Dockerfile.suitecrm-server /vagrant/
-# # # 0. Build ELK Stack Containers
-echo -e "${BGREEN}\n[+]${NC} Building elasticsearch image...${NC}"
-docker build -t elasticsearch -f /vagrant/Dockerfile.elastic /vagrant/
-echo -e "${BGREEN}\n[+]${NC} Building logstash image...${NC}"
-docker build -t logstash -f /vagrant/Dockerfile.logstash /vagrant/
-echo -e "${BGREEN}\n[+]${NC} Building kibana image...${NC}"
-docker build -t kibana -f /vagrant/Dockerfile.kibana /vagrant/
-
-# 0. Docker compose up -d
-echo -e "\n${BGREEN}[+]${NC} Running docker compose up -d --build.."
-docker compose -f /vagrant/docker-compose.yaml up -d --build
-echo -e "${BGREEN}[+]${NC} Docker compose up!${NC}"
-
-
 # A. Find container network namespace for our containers
 echo -e "${BGREEN}\n[+]${NC} A. Setting bash script variables...${NC}"
-# A1. Get the container id for each container (will be needed later)
-echo -e "${BGREEN}[+]${NC} A1. Setting variables: c1_id, c2_id, c3_id, c4_id, r1_id, r2_id to store container IDs..."
-c1_id=$(docker ps --format "{{.ID}}" --filter name=c1)
-echo "c1_id=${c1_id}"
-c2_id=$(docker ps --format "{{.ID}}" --filter name=c2)
-echo "c2_id=${c2_id}"
-c3_id=$(docker ps --format "{{.ID}}" --filter name=c3)
-echo "c3_id=${c3_id}"
-c4_id=$(docker ps --format "{{.ID}}" --filter name=c4)
-echo "c4_id=${c4_id}"
-c5_id=$(docker ps --format "{{.ID}}" --filter name=c5)
-echo "c5_id=${c5_id}"
-c6_id=$(docker ps --format "{{.ID}}" --filter name=c6)
-echo "c6_id=${c6_id}"
+## A1. Get the container id for each container (will be needed later)
+echo -e "${BGREEN}[+]${NC} A1. Setting variables to store container IDs..."
+
+### suitecrm_nw
+s1_id=$(docker ps --format "{{.ID}}" --filter name=s1)
+echo "s1_id=${s1_id}"
+s2_id=$(docker ps --format "{{.ID}}" --filter name=s2)
+echo "s2_id=${s2_id}"
+
+### dev_nw
+d1_id=$(docker ps --format "{{.ID}}" --filter name=d1)
+echo "d1_id=${d1_id}"
+
+### internet_nw - excluding edge routers
+k1_id=$(docker ps --format "{{.ID}}" --filter name=k1)
+echo "k1_id=${k1_id}"
+
+### dmz_nw - exluding edge routers
+dmz1_id=$(docker ps --format "{{.ID}}" --filter name=dmz1)
+echo "dmz1_id=${dmz1_id}"
+
+### elk_nw
+elasticsearch_id=$(docker ps --format "{{.ID}}" --filter name=elasticsearch)
+echo "elasticsearch_id=${elasticsearch_id}"
+logstash_id=$(docker ps --format "{{.ID}}" --filter name=logstash)
+echo "logstash_id=${logstash_id}"
+kibana_id=$(docker ps --format "{{.ID}}" --filter name=kibana)
+echo "kibana_id=${kibana_id}"
+
+### routers
 r1_id=$(docker ps --format "{{.ID}}" --filter name=r1)
 echo "r1_id=${r1_id}"
 r2_id=$(docker ps --format "{{.ID}}" --filter name=r2)
 echo "r2_id=${r2_id}"
 r3_id=$(docker ps --format "{{.ID}}" --filter name=r3)
-echo "r2_id=${r3_id}"
-
-# A2. Get the containers pids which will be used to find their network namespace
-echo -e "${BGREEN}\n[+]${NC} A2. Setting variables: c1_pid, c2_pid, c3_pid, c4_pid, c5_pid, c6_pid, r1_pid, r2_pid to store container${NC}...${NC}"
-c1_pid=$(docker inspect -f "{{.State.Pid}}" ${c1_id})
-echo "c1_pid=${c1_pid}"
-c2_pid=$(docker inspect -f "{{.State.Pid}}" ${c2_id})
-echo "c2_pid=${c2_pid}"
-c3_pid=$(docker inspect -f "{{.State.Pid}}" ${c3_id})
-echo "c3_pid=${c3_pid}"
-c4_pid=$(docker inspect -f "{{.State.Pid}}" ${c4_id})
-echo "c4_pid=${c4_pid}"
-c5_pid=$(docker inspect -f "{{.State.Pid}}" ${c5_id})
-echo "c5_pid=${c5_pid}"
-c6_pid=$(docker inspect -f "{{.State.Pid}}" ${c6_id})
-echo "c6_pid=${c6_pid}"
-r1_pid=$(docker inspect -f "{{.State.Pid}}" ${r1_id})
-echo "r1_pid=${r1_pid}"
-r2_pid=$(docker inspect -f "{{.State.Pid}}" ${r2_id})
-echo "r2_pid=${r2_pid}"
-r3_pid=$(docker inspect -f "{{.State.Pid}}" ${r3_id})
-echo "r3_pid=${r3_pid}"
-
-# A3. create the /var/run/netns/ path if it doesn"t already exist
-echo -e "${BGREEN}\n[+]${NC} A3. Making Dir /var/run/netns if not exist...${NC}"
-mkdir -p /var/run/netns/
-
-# A4. Create a soft link to the containers network namespace to /var/run/netns/
-echo -e "${BGREEN}\n[+]${NC} A4. Creating soft link to the containers network namespace to /var/run/netns...${NC}"
-ln -sfT /proc/$c1_pid/ns/net /var/run/netns/$c1_id
-ln -sfT /proc/$c2_pid/ns/net /var/run/netns/$c2_id
-ln -sfT /proc/$c3_pid/ns/net /var/run/netns/$c3_id
-ln -sfT /proc/$c4_pid/ns/net /var/run/netns/$c4_id
-ln -sfT /proc/$c5_pid/ns/net /var/run/netns/$c5_id
-ln -sfT /proc/$c6_pid/ns/net /var/run/netns/$c6_id
-ln -sfT /proc/$r1_pid/ns/net /var/run/netns/$r1_id
-ln -sfT /proc/$r2_pid/ns/net /var/run/netns/$r2_id
-ln -sfT /proc/$r3_pid/ns/net /var/run/netns/$r3_id
-
-# A5. Now lets show the ip addresses in each contaiemr namespace
-echo -e "${BGREEN}\n[+]${NC} A5. Printing IP addresses ofs each container...${NC}"
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}c1${NC}: ip netns exec $c1_id ${GREEN} ip a${NC}..."
-ip netns exec $c1_id ip a
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}c2${NC}: ip netns exec $c2_id ${GREEN} ip a${NC}..."
-ip netns exec $c2_id ip a
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}c3${NC}: ip netns exec $c3_id ${GREEN} ip a${NC}..."
-ip netns exec $c3_id ip a
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}c4${NC}: ip netns exec $c4_id ${GREEN} ip a${NC}..."
-ip netns exec $c4_id ip a
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}c5${NC}: ip netns exec $c5_id ${GREEN} ip a${NC}..."
-ip netns exec $c5_id ip a
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}c6${NC}: ip netns exec $c6_id ${GREEN} ip a${NC}..."
-ip netns exec $c6_id ip a
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}r1${NC}: ip netns exec $r1_id ${GREEN} ip a${NC}..."
-ip netns exec $r1_id ip a
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}r2${NC}: ip netns exec $r2_id ${GREEN} ip a${NC}..."
-ip netns exec $r2_id ip a
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}r3${NC}: ip netns exec $r3_id ${GREEN} ip a${NC}..."
-ip netns exec $r3_id ip a
+echo "r3_id=${r3_id}"
 
 
-# B. Create virtual ethernet interfaces and assign them to the containers
-echo -e "${BGREEN}\n[+]${NC} B. Creating and assigning virtual ethernet interfaces to containers...${NC}"
-# B1. Create the virtual ethernet devices for connecting C1 to R1
-echo -e "${BGREEN}[+]${NC} B1. Creating r1-eth0 interface for ${GREEN}connecting C1 to R1${NC}..."
-ip link add "c1-eth0" type veth peer name "r1-eth0"
+## A2. Get the containers pids which will be used to find their network namespace
+echo -e "${BGREEN}\n[+]${NC} A2. Setting variables to store container${NC}...${NC}"
+### suitecrm_nw
+s1_id=$(docker inspect -f "{{.State.Pid}}" ${s1_id})
+echo "s1_id=${s1_id}"
+s2_id=$(docker inspect -f "{{.State.Pid}}" ${s2_id})
+echo "s2_id=${s2_id}"
 
-## Create the virtual ethernet devices for connecting C2 to R1
-echo -e "${BGREEN}[+]${NC} Creating r1-eth1 interface for ${GREEN}connecting C2 to R1${NC}..."
-ip link add "c2-eth0" type veth peer name "r1-eth1"
+### dev_nw
+d1_id=$(docker inspect -f "{{.State.Pid}}" ${d1_id})
+echo "d1_id=${d1_id}"
 
-## Create the virtual ethernet devices for connecting C4 to R2
-echo -e "${BGREEN}[+]${NC} Creating r2-eth0 interface for ${GREEN}connecting C4 to R2${NC}..."
-ip link add "c4-eth0" type veth peer name "r2-eth0"
+### internet_nw - excluding edge routers
+k1_id=$(docker inspect -f "{{.State.Pid}}" ${k1_id})
+echo "k1_id=${k1_id}"
 
-## Create the virtual ethernet devices for connecting R1 to R2
-echo -e "${BGREEN}[+]${NC} Creating r2-eth1 interface for ${GREEN}connecting R1 to R2${NC}..."
-ip link add "r1-eth3" type veth peer name "r2-eth1"
+### dmz_nw - exluding edge routers
+dmz1_id=$(docker inspect -f "{{.State.Pid}}" ${dmz1_id})
+echo "dmz1_id=${dmz1_id}"
 
-## Create the virtual ethernet devices for connecting R1 to R3
-echo -e "${BGREEN}[+]${NC} Creating r3-eth0 interface for ${GREEN}connecting R1 to R3${NC}..."
-ip link add "r1-eth2" type veth peer name "r3-eth0"
+### elk_nw
+elasticsearch_id=$(docker inspect -f "{{.State.Pid}}" ${elasticsearch_id})
+echo "elasticsearch_id=${elasticsearch_id}"
+logstash_id=$(docker inspect -f "{{.State.Pid}}" ${logstash_id})
+echo "logstash_id=${logstash_id}"
+kibana_id=$(docker inspect -f "{{.State.Pid}}" ${kibana_id})
+echo "kibana_id=${kibana_id}"
 
-
-# B2. Moving virtual interfaces from host network namespace to corresponding containers namespace
-## move c1 interface to c1 container
-echo -e "\n${BGREEN}[+]${NC} B2. Moving ${GREEN}c1-eth0 to c1${NC} container${NC}..."
-ip link set "c1-eth0" netns $c1_id
-
-## move c2 interface to c2 container
-echo -e "${BGREEN}[+]${NC} Moving ${GREEN}c2-eth0 to c2${NC} container..."
-ip link set "c2-eth0" netns $c2_id
-
-## move c4 interface to c4 container
-echo -e "${BGREEN}[+]${NC} Moving ${GREEN}c4-eth0 to c4${NC} container..."
-ip link set "c4-eth0" netns $c4_id
-
-## move r1-eth0,1,2,3 to r1 container
-echo -e "${BGREEN}[+]${NC} Moving ${GREEN}r1-eth0,1 to r1${NC} container..."
-ip link set "r1-eth0" netns $r1_id
-ip link set "r1-eth1" netns $r1_id
-ip link set "r1-eth2" netns $r1_id
-ip link set "r1-eth3" netns $r1_id
-
-## move r2-eth0,1 to r2 container
-echo -e "${BGREEN}[+]${NC} Moving ${GREEN}r2-eth0,1 to r2${NC} container..."
-ip link set "r2-eth0" netns $r2_id
-ip link set "r2-eth1" netns $r2_id
-
-## move r3-eth0 to r3 container
-echo -e "${BGREEN}[+]${NC} Moving ${GREEN}r3-eth0 to r3${NC} container..."
-ip link set "r3-eth0" netns $r3_id
-
-# B3. Rename interfaces in containers
-### rename c1 container interface from c1-eth0 to eth0
-echo -e "\n${BGREEN}[+]${NC} B3. Renaming c1 container interface from ${GREEN}c1-eth0 to eth0${NC}..."
-ip netns exec $c1_id ip link set "c1-eth0" name "eth0"
-
-### rename c2 container interface form c2-eth0 to eth0
-echo -e "${BGREEN}[+]${NC} Renaming c2 container interface from ${GREEN}c2-eth0 to eth0${NC}..."
-ip netns exec $c2_id ip link set "c2-eth0" name "eth0"
-
-### rename c4 container interface form c4-eth0 to eth0
-echo -e "${BGREEN}[+]${NC} Renaming c4 container interface from ${GREEN}c4-eth0 to eth0${NC}..."
-ip netns exec $c4_id ip link set "c4-eth0" name "eth0"
-
-### rename r1 container interfaces from r1-eth0 to eth0 and r1-eth1 to eth1, and for eth2 && eth3
-echo -e "${BGREEN}[+]${NC} Renaming r1 container interface from ${GREEN}r1-eth0 to eth0${NC}..."
-ip netns exec $r1_id ip link set "r1-eth0" name "eth0"
-echo -e "${BGREEN}[+]${NC} Renaming r1 container interface from ${GREEN}r1-eth1 to eth1${NC}..."
-ip netns exec $r1_id ip link set "r1-eth1" name "eth1"
-echo -e "${BGREEN}[+]${NC} Renaming r1 container interface from ${GREEN}r1-eth2 to eth2${NC}..."
-ip netns exec $r1_id ip link set "r1-eth2" name "eth2"
-echo -e "${BGREEN}[+]${NC} Renaming r1 container interface from ${GREEN}r1-eth3 to eth3${NC}..."
-ip netns exec $r1_id ip link set "r1-eth3" name "eth3"
-
-### rename r2 container interfaces from r2-eth0 to eth0 and r2-eth1 to eth1
-echo -e "${BGREEN}[+]${NC} Renaming r2 container interface from ${GREEN}r2-eth0 to eth0${NC}..."
-ip netns exec $r2_id ip link set "r2-eth0" name "eth0"
-echo -e "${BGREEN}[+]${NC} Renaming r2 container interface from ${GREEN}r2-eth1 to eth1${NC}..."
-ip netns exec $r2_id ip link set "r2-eth1" name "eth1"
-
-### rename r3 container interfaces from r3-eth0 to eth0
-echo -e "${BGREEN}[+]${NC} Renaming r3 container interface from ${GREEN}r3-eth0 to eth1${NC}..."
-ip netns exec $r3_id ip link set "r3-eth0" name "eth1"
+### routers
+r1_id=$(docker inspect -f "{{.State.Pid}}" ${r1_id})
+echo "r1_id=${r1_id}"
+r2_id=$(docker inspect -f "{{.State.Pid}}" ${r2_id})
+echo "r2_id=${r2_id}"
+r3_id=$(docker inspect -f "{{.State.Pid}}" ${r3_id})
+echo "r3_id=${r3_id}"
 
 
-# B4. Bring up all interfaces in containers
-## At the end of this, all containers should have network
-## interfaces set in them and linked together directly with no bridge in between
-echo -e "${BGREEN}\n[+]${NC} B4. Bringing up all interfaces in containers...${NC}"
-ip netns exec $c1_id ip link set "eth0" up
-echo -e "${BGREEN}[+]${NC} c1 eth0 up!"
-ip netns exec $c1_id ip link set "lo" up
-echo -e "${BGREEN}[+]${NC} c1 lo up!"
+## A3. Now lets show the ip addresses in each contaiemr namespace
+echo -e "${BGREEN}\n[+]${NC} A3. Printing IP addresses of each container...${NC}"
+### suitecrm_nw
+echo -e "${BGREEN}[+]${NC} Running for ${GREEN}s1${NC}: printing network interface : IP ${GREEN} ${NC}..."
+echo -e "${BLUE}Network Interfaces:${NC}"
+docker exec -it s1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+echo -e "${BLUE}Routes:${NC}"
+docker exec -it s1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
-ip netns exec $c2_id ip link set "eth0" up
-echo -e "${BGREEN}\n[+]${NC} c2 eth0"
-ip netns exec $c2_id ip link set "lo" up
-echo -e "${BGREEN}[+]${NC} c2 lo up!"
+echo -e "${BGREEN}[+]${NC} Running for ${GREEN}s2${NC}: printing network interface : IP ${GREEN} ${NC}..."
+echo -e "${BLUE}Network Interfaces:${NC}"
+docker exec -it s2 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+echo -e "${BLUE}Routes:${NC}"
+docker exec -it s2 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
-ip netns exec $c4_id ip link set "eth0" up
-echo -e "${BGREEN}\n[+]${NC} c4 eth0"
-ip netns exec $c4_id ip link set "lo" up
-echo -e "${BGREEN}[+]${NC} c4 lo up!"
+### dev_nw
+echo -e "${BGREEN}\n[+]${NC} Running for ${GREEN}d1${NC}: printing network interface : IP ${GREEN} ${NC}..."
+echo -e "${BLUE}Network Interfaces:${NC}"
+docker exec -it d1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+echo -e "${BLUE}Routes:${NC}"
+docker exec -it d1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
-ip netns exec $r1_id ip link set "eth0" up
-echo -e "${BGREEN}\n[+]${NC} r1 eth0"
-ip netns exec $r1_id ip link set "eth1" up
-echo -e "${BGREEN}[+]${NC} r1 eth1 up!"
-ip netns exec $r1_id ip link set "eth2" up
-echo -e "${BGREEN}[+]${NC} r1 eth2 up!"
-ip netns exec $r1_id ip link set "eth3" up
-echo -e "${BGREEN}[+]${NC} r1 eth3 up!"
-ip netns exec $r1_id ip link set "lo" up
-echo -e "${BGREEN}[+]${NC} r1 lo up!"
-
-ip netns exec $r2_id ip link set "eth0" up
-echo -e "${BGREEN}\n[+]${NC} r2 eth0"
-ip netns exec $r2_id ip link set "eth1" up
-echo -e "${BGREEN}[+]${NC} r2 eth1 up!"
-ip netns exec $r2_id ip link set "lo" up
-echo -e "${BGREEN}[+]${NC} r2 lo up!"
-
-ip netns exec $r3_id ip link set "eth1" up
-echo -e "${BGREEN}\n[+]${NC} r3 eth1"
+### dmz_nw
+echo -e "${BGREEN}\n[+]${NC} Running for ${GREEN}dmz1${NC}: printing network interface : IP ${GREEN} ${NC}..."
+echo -e "${BLUE}Network Interfaces:${NC}"
+docker exec -it dmz1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+echo -e "${BLUE}Routes:${NC}"
+docker exec -it dmz1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 
-# C. Setting IP and Routes on the containers
-echo -e "${BGREEN}\n[+]${NC} C. Setting IP and Routes on the containers...${NC}"
-## Set c1 container ip to 10.10.10.2
-echo -e "${BGREEN}[+]${NC} Setting ${GREEN}c1${NC} container ip to ${GREEN}10.10.10.2${NC}..."
-ip netns exec $c1_id ip addr add 10.10.10.2/24 dev eth0
-
-## Set c2 container ip to 192.168.10.2
-echo -e "${BGREEN}[+]${NC} Setting ${GREEN}c2${NC} container ip to ${GREEN}192.168.10.2${NC}..."
-ip netns exec $c2_id ip addr add 192.168.10.2/24 dev eth0
-
-## Set c4 container ip to 172.16.10.2
-echo -e "${BGREEN}[+]${NC} Setting ${GREEN}c4${NC} container ip to ${GREEN}172.16.10.2${NC}..."
-ip netns exec $c4_id ip addr add 172.16.10.2/24 dev eth0
-
-## Set r1 ips to 10.10.10.1 and 192.168.10.1
-echo -e "${BGREEN}[+]${NC} Setting ${GREEN}r1${NC} container ip to ${GREEN}10.10.10.2, 192.168.10.1, 192.168.20.1, 172.16.20.1${NC}..."
-ip netns exec $r1_id ip addr add 10.10.10.1/24 dev eth0
-ip netns exec $r1_id ip addr add 192.168.10.1/24 dev eth1
-ip netns exec $r1_id ip addr add 192.168.20.1/24 dev eth2
-ip netns exec $r1_id ip addr add 172.16.20.1/24 dev eth3
-
-## Set r2 ips to 172.16.10.1 and 172.168.20.1
-echo -e "${BGREEN}[+]${NC} Setting ${GREEN}r2${NC} container ip to ${GREEN}172.16.10.1, 172.168.20.2${NC}..."
-ip netns exec $r2_id ip addr add 172.16.10.1/24 dev eth0
-ip netns exec $r2_id ip addr add 172.16.20.2/24 dev eth1
-
-## Set r3 ips to 192.168.20.2
-echo -e "${BGREEN}[+]${NC} Setting ${GREEN}r3${NC} container ip to ${GREEN}192.168.20.2${NC}..."
-ip netns exec $r3_id ip addr add 192.168.20.2/24 dev eth1
+### kali
+echo -e "${BGREEN}\n[+]${NC} Running for ${GREEN}k1${NC}: printing network interface : IP ${GREEN} ${NC}..."
+echo -e "${BLUE}Network Interfaces:${NC}"
+docker exec -it k1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+echo -e "${BLUE}Routes:${NC}"
+docker exec -it k1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 
-# D. Setting default gateways
-echo -e "${BGREEN}\n[+]${NC} D. Setting default gateways...${NC}"
-## set default gw for c1 container
-echo -e "${BGREEN}[+]${NC} Set default gateway on ${GREEN}c1 to r1${NC}..."
-ip netns exec $c1_id ip route add default via 10.10.10.1 dev eth0
+### elk_nw
+echo -e "${BGREEN}[+]${NC} Running for ${GREEN}elasticsearch${NC}: printing network interface : IP ${GREEN} ${NC}..."
+echo -e "${BLUE}Network Interfaces:${NC}"
+docker exec -it elasticsearch ip --oneline addr show | awk '{ print $2 ": " $4 }'
+echo -e "${BLUE}Routes:${NC}"
+docker exec -it elasticsearch ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
-## set default gw for c2 container
-echo -e "${BGREEN}[+]${NC} Set default gateway on ${GREEN}c2 to r1${NC}..."
-ip netns exec $c2_id ip route add default via 192.168.10.1 dev eth0
+echo -e "${BGREEN}[+]${NC} Running for ${GREEN}logstash${NC}: printing network interface : IP ${GREEN} ${NC}..."
+echo -e "${BLUE}Network Interfaces:${NC}"
+docker exec -it logstash ip --oneline addr show | awk '{ print $2 ": " $4 }'
+echo -e "${BLUE}Routes:${NC}"
+docker exec -it logstash ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
-## set default gw for c3 container
-echo -e "${BGREEN}[+]${NC} Set default gateway on ${GREEN}c3 to r3${NC}..."
-ip netns exec $c3_id ip route replace default via 192.168.30.2 dev eth0
+echo -e "${BGREEN}[+]${NC} Running for ${GREEN}kibana${NC}: printing network interface : IP ${GREEN} ${NC}..."
+echo -e "${BLUE}Network Interfaces:${NC}"
+docker exec -it kibana ip --oneline addr show | awk '{ print $2 ": " $4 }'
+echo -e "${BLUE}Routes:${NC}"
+docker exec -it kibana ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
-## set default gw for c4 container
-echo -e "${BGREEN}[+]${NC} Set default gateway on ${GREEN}c4 to r2${NC}..."
-ip netns exec $c4_id ip route add default via 172.16.10.1 dev eth0
+### router
+echo -e "${BGREEN}\n[+]${NC} Running for ${GREEN}r1${NC}: printing network interface : IP ${GREEN} ${NC}..."
+echo -e "${BLUE}Network Interfaces:${NC}"
+docker exec -it r1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+echo -e "${BLUE}Routes:${NC}"
+docker exec -it r1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
-## set default gw for c5 container
-echo -e "${BGREEN}[+]${NC} Set default gateway on ${GREEN}c5 to r3${NC}..."
-ip netns exec $c5_id ip route replace default via 192.168.30.2 dev eth0
+echo -e "${BGREEN}[+]${NC} Running for ${GREEN}r2${NC}: printing network interface : IP ${GREEN} ${NC}..."
+echo -e "${BLUE}Network Interfaces:${NC}"
+docker exec -it r2 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+echo -e "${BLUE}Routes:${NC}"
+docker exec -it r2 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
-## set default gw for c6 container
-echo -e "${BGREEN}[+]${NC} Set default gateway on ${GREEN}c6 to r3${NC}..."
-ip netns exec $c6_id ip route replace default via 192.168.30.2 dev eth0
-
-## set default gw for r1 container
-echo -e "${BGREEN}[+]${NC} Set default gateway on ${GREEN}r1 to r2${NC}..."
-ip netns exec $r1_id ip route add default via 172.16.20.2 dev eth3
-echo -e "${BGREEN}[+]${NC} Setting route on ${GREEN}r1 to r3${NC}..."
-ip netns exec $r1_id ip route add 192.168.30.0/24 via 192.168.20.2 dev eth2
-
-## set default gw for r2 container
-echo -e "${BGREEN}[+]${NC} Set default gateway on ${GREEN}r2 to r1${NC}..."
-ip netns exec $r2_id ip route add default via 172.16.20.1 dev eth1
-echo -e "${BGREEN}[+]${NC} Setting route on ${GREEN}r2 to r3${NC}..."
-ip netns exec $r1_id ip route add 192.168.30.0/24 via 172.16.20.1 dev eth1
-
-## set default gw for r3 container
-echo -e "${BGREEN}[+]${NC} Set default gateway on ${GREEN}r3 to r1${NC}..."
-ip netns exec $r3_id ip route replace default via 192.168.20.1 dev eth1
+echo -e "${BGREEN}[+]${NC} Running for ${GREEN}r3${NC}: printing network interface : IP ${GREEN} ${NC}..."
+echo -e "${BLUE}Network Interfaces:${NC}"
+docker exec -it r3 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+echo -e "${BLUE}Routes:${NC}"
+docker exec -it r3 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 
-# E. Printing Routes of Containers
-echo -e "${BGREEN}\n[+]${NC} A5. Printing IP addresses ofs each container...${NC}"
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}C1${NC}: ip netns exec $c1_id ${GREEN}ip route${NC}..."
-ip netns exec $c1_id ip route
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}C2${NC}: ip netns exec $c2_id ${GREEN}ip route${NC}..."
-ip netns exec $c2_id ip route
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}C4${NC}: ip netns exec $c4_id ${GREEN}ip route${NC}..."
-ip netns exec $c4_id ip route
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}R1${NC}: ip netns exec $r1_id ${GREEN}ip route${NC}..."
-ip netns exec $r1_id ip route
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}R2${NC}: ip netns exec $r2_id ${GREEN}ip route${NC}..."
-ip netns exec $r2_id ip route
+# B. Enabling routing on routers
+echo -e "${BGREEN}\n[+]${NC} B. Enabling routing on routers..."
 
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}R3${NC}: ip netns exec $r3_id ${GREEN}ip route${NC}..."
-ip netns exec $r3_id ip route
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}C3${NC}: ip netns exec $c3_id ${GREEN}ip route${NC}..."
-ip netns exec $c3_id ip route
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}C5${NC}: ip netns exec $c5_id ${GREEN}ip route${NC}..."
-ip netns exec $c5_id ip route
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}C6${NC}: ip netns exec $c6_id ${GREEN}ip route${NC}..."
-ip netns exec $c6_id ip route
+echo -e "${BGREEN}\n[+]${NC} Enabling routing on r1..."
+docker exec -it r1 sysctl -w net.ipv4.ip_forward=1
+docker exec -it r1 sysctl net.ipv4.ip_forward
+echo -e "${BGREEN}\n[+]${NC} Enabling routing on r2..."
+docker exec -it r2 sysctl -w net.ipv4.ip_forward=1
+docker exec -it r2 sysctl net.ipv4.ip_forward
+echo -e "${BGREEN}\n[+]${NC} Enabling routing on r3..."
+docker exec -it r3 sysctl -w net.ipv4.ip_forward=1
+docker exec -it r3 sysctl net.ipv4.ip_forward
 
-# F. Ping test - takes some time
-chmod +x /vagrant/ping_test.sh
-## Uncomment the cmd below or manually run the ping test via
-## sudo ./ping_test.sh
-# ./ping_test.sh
+# C. Adding routes on nodes - including routers
+echo -e "${BGREEN}\n[+]${NC} C. Adding routes on nodes..."
+## ip route add <network/cidr> via <next hop> dev <host network outgoing interface>
 
-# G. Setup OpenVPN tunnel between c2 and c4 with VPN Pivoting
-docker exec c2 openvpn --genkey --secret static-OpenVPN.key
-docker exec c2 bash -c 'echo -e "mode p2p\ndev tun\nport 1194\nproto tcp-server\nifconfig 172.16.30.1 172.16.30.2\nsecret ../../static-OpenVPN.key\n;user nobody\n;group nobody\n\nkeepalive 10 60\nping-timer-rem\npersist-tun\npersist-key\n\ncomp-lzo" > /etc/openvpn/server.conf'
-docker exec c2 bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'
-docker exec c2 ufw allow from any to any port 1194 proto tcp
-docker exec c2 iptables -t nat -A POSTROUTING -s 172.16.30.2 -o eth0 -j MASQUERADE
-docker exec c4 bash -c 'echo -e "mode p2p\nremote 192.168.10.2\ndev tun\nport 1194\nproto tcp-client\nifconfig 172.16.30.2 172.16.30.1\nsecret ../../static-OpenVPN.key\ncomp-lzo\nroute-metric 15\nroute 192.168.10.0 255.255.255.0 172.16.10.1" > /etc/openvpn/client.conf'
-docker cp c2:/static-OpenVPN.key /home
-docker cp /home/static-OpenVPN.key c4:/
-docker exec c2 openvpn --config /etc/openvpn/server.conf &
-docker exec c4 openvpn --config /etc/openvpn/client.conf &
+## routers - only configure for 2 bound network
+### R1
+echo -e "r1 --> dmz_nw"
+docker exec -it r1 ip route add 10.10.20.0/24 via 172.16.20.2 dev eth1 # r1 --> dmz_nw
+echo -e "r1 --> internet_nw"
+docker exec -it r1 ip route add 172.16.10.0/24 via 172.16.20.2 dev eth1 # r1 --> internet_nw
+echo -e "r1 --> elk_nw"
+docker exec -it r1 ip route add 192.168.30.0/24 via 172.16.40.2 dev eth2 # r1 --> elk_nw
+### R2
+echo -e "r2 --> dev_nw"
+docker exec -it r2 ip route add 192.168.10.0/24 via 172.16.20.3 dev eth2 # r2 --> dev_nw
+echo -e "r2 --> suitecrm_nw"
+docker exec -it r2 ip route add 10.10.10.0/24 via 172.16.20.3 dev eth2 # r2 --> suitecrm_nw
+echo -e "r2 --> elk_nw"
+docker exec -it r2 ip route add 192.168.30.0/24 via 172.16.20.3 dev eth2 # r2 --> elk_nw
+### R3
+echo -e "r3 --> suitecrm_nw"
+docker exec -it r3 ip route add 10.10.10.0/24 via 172.16.40.3 dev eth1 # r3 --> suitecrm_nw
+echo -e "r3 --> dev_nw"
+docker exec -it r3 ip route add 192.168.10.0/24 via 172.16.40.3 dev eth1 # r3 --> dev_nw 
+echo -e "r3 --> dmz_nw"
+docker exec -it r3 ip route add 10.10.20.0/24 via 172.16.40.3 dev eth1 # r3 --> dmz_nw
+echo -e "r3 --> internet_nw"
+docker exec -it r3 ip route add 172.16.10.0/24 via 172.16.40.3 dev eth1 # r3 --> internet_nw
+
+## dev_nw clients
+### D1
+echo -e "d1 --> suitecrm_nw via r1"
+docker exec -it d1 ip route add 10.10.10.0/24 via 192.168.10.254 dev eth0 # d1 --> suitecrm_nw via r1
+echo -e "d1 --> dmz_nw via r1"
+docker exec -it d1 ip route add 10.10.20.0/24 via 192.168.10.254 dev eth0 # d1 --> dmz_nw via r1
+echo -e "d1 --> elk_nw via r1"
+docker exec -it d1 ip route add 192.168.30.0/24 via 192.168.10.254 dev eth0 # d1 --> elk_nw via r1
+echo -e "d1 --> r1_r2_nw via r1"
+docker exec -it d1 ip route add 172.16.20.0/24 via 192.168.10.254 dev eth0 # d1 --> r1_r2_nw via r1
+echo -e "d1 --> r2_r3_nw via r1"
+docker exec -it d1 ip route add 172.16.40.0/24 via 192.168.10.254 dev eth0 # d1 --> r2_r3_nw via r1
+
+## suitecrm_nw clients
+### S1
+echo -e "s1 --> dmz_nw via r1"
+docker exec -it s1 ip route add 10.10.20.0/24 via 10.10.10.254 dev eth0 # s1 --> dmz_nw via r1
+echo -e "s1 --> dev_nw via r1"
+docker exec -it s1 ip route add 192.168.10.0/24 via 10.10.10.254 dev eth0 # s1 --> dev_nw via r1
+echo -e "s1 --> elk_nw via r1"
+docker exec -it s1 ip route add 192.168.30.0/24 via 10.10.10.254 dev eth0 # s1 --> elk_nw via r1
+echo -e "s1 --> internet_nw via r1"
+docker exec -it s1 ip route add 172.16.10.0/24 via 10.10.10.254 dev eth0 # s1 --> internet_nw via r1
+echo -e "s1 --> r1_r2_nw via r1"
+docker exec -it s1 ip route add 172.16.20.0/24 via 10.10.10.254 dev eth0 # s1 --> r1_r2_nw via r1
+echo -e "s1 --> r2_r3_nw via r1"
+docker exec -it s1 ip route add 172.16.40.0/24 via 10.10.10.254 dev eth0 # s1 --> r2_r3_nw via r1
+### S2
+echo -e "s2 --> dmz_nw via r1"
+docker exec -it s2 ip route add 10.10.20.0/24 via 10.10.10.254 dev eth0 # s2 --> dmz_nw via r1
+echo -e "s2 --> dev_nw via r1"
+docker exec -it s2 ip route add 192.168.10.0/24 via 10.10.10.254 dev eth0 # s2 --> dev_nw via r1
+echo -e "s2 --> elk_nw via r1"
+docker exec -it s2 ip route add 192.168.30.0/24 via 10.10.10.254 dev eth0 # s2 --> elk_nw via r1
+echo -e "s2 --> internet_nw via r1"
+docker exec -it s2 ip route add 172.16.10.0/24 via 10.10.10.254 dev eth0 # s2 --> internet_nw via r1
+echo -e "s2 --> r1_r2_nw via r1"
+docker exec -it s2 ip route add 172.16.20.0/24 via 10.10.10.254 dev eth0 # s2 --> r1_r2_nw via r1
+echo -e "s2 --> r2_r3_nw via r1"
+docker exec -it s2 ip route add 172.16.40.0/24 via 10.10.10.254 dev eth0 # s2 --> r2_r3_nw via r1
+
+## dmz_nw clients
+### DMZ1
+echo -e "dmz1 --> suitecrm_nw via r2"
+docker exec -it dmz1 ip route add 10.10.10.0/24 via 10.10.20.254 dev eth0 # dmz1 --> suitecrm_nw via r2
+echo -e "dmz1 --> dev_nw via r2"
+docker exec -it dmz1 ip route add 192.168.10.0/24 via 10.10.20.254 dev eth0 # dmz1 --> dev_nw via r2
+echo -e "dmz1 --> elk_nw via r2"
+docker exec -it dmz1 ip route add 192.168.30.0/24 via 10.10.20.254 dev eth0 # dmz1 --> elk_nw via r2
+echo -e "dmz1 --> internet_nw via r2"
+docker exec -it dmz1 ip route add 172.16.10.0/24 via 10.10.20.254 dev eth0 # dmz1 --> internet_nw via r2
+echo -e "dmz1 --> r1_r2_nw via r2"
+docker exec -it dmz1 ip route add 172.16.20.0/24 via 10.10.20.254 dev eth0 # dmz1 --> r1_r2_nw via r2
+echo -e "dmz1 --> r2_r3_nw via r2"
+docker exec -it dmz1 ip route add 172.16.40.0/24 via 10.10.20.254 dev eth0 # dmz1 --> r2_r3_nw via r2
+
+## internet_nw clients
+### K1 - in real life, this shouldn't be the case
+echo -e "k1 --> dmz_nw via r2"
+docker exec -it k1 ip route add 10.10.20.0/24 via 172.16.10.3 dev eth0 # k1 --> dmz_nw via r2
+echo -e "k1 --> r1_r2_nw via r2"
+docker exec -it k1 ip route add 172.16.20.0/24 via 172.16.10.3 dev eth0 # k1 --> r1_r2_nw via r2
+
+## elk_nw clients
+### elasticsearch
+echo -e "elasticsearch --> suitecrm_nw via r3"
+docker exec -u 0 -it elasticsearch ip route add 10.10.10.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> suitecrm_nw via r3
+echo -e "elasticsearch --> dev_nw via r3"
+docker exec -u 0 -it elasticsearch ip route add 192.168.10.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> dev_nw via r3
+echo -e "elasticsearch --> dmz_nw via r3"
+docker exec -u 0 -it elasticsearch ip route add 10.10.20.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> dmz_nw via r3
+echo -e "elasticsearch --> internet_nw via r3"
+docker exec -u 0 -it elasticsearch ip route add 172.16.10.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> internet_nw via r3
+echo -e "elasticsearch --> r1_r2_nw via r3"
+docker exec -u 0 -it elasticsearch ip route add 172.16.20.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> r1_r2_nw via r3
+echo -e "elasticsearch --> r2_r3_nw via r3"
+docker exec -u 0 -it elasticsearch ip route add 172.16.40.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> r2_r3_nw via r3
+
+### logstash
+echo -e "logstash --> suitecrm_nw via r3"
+docker exec -u 0 -it logstash ip route add 10.10.10.0/24 via 192.168.30.254 dev eth0 # logstash --> suitecrm_nw via r3
+echo -e "logstash --> dev_nw via r3"
+docker exec -u 0 -it logstash ip route add 192.168.10.0/24 via 192.168.30.254 dev eth0 # logstash --> dev_nw via r3
+echo -e "logstash --> dmz_nw via r3"
+docker exec -u 0 -it logstash ip route add 10.10.20.0/24 via 192.168.30.254 dev eth0 # logstash --> dmz_nw via r3
+echo -e "logstash --> internet_nw via r3"
+docker exec -u 0 -it logstash ip route add 172.16.10.0/24 via 192.168.30.254 dev eth0 # logstash --> internet_nw via r3
+echo -e "logstash --> r1_r2_nw via r3"
+docker exec -u 0 -it logstash ip route add 172.16.20.0/24 via 192.168.30.254 dev eth0 # logstash --> r1_r2_nw via r3
+echo -e "logstash --> r2_r3_nw via r3"
+docker exec -u 0 -it logstash ip route add 172.16.40.0/24 via 192.168.30.254 dev eth0 # logstash --> r2_r3_nw via r3
+
+### kibana
+echo -e "kibana --> suitecrm_nw via r3"
+docker exec -u 0 -it kibana ip route add 10.10.10.0/24 via 192.168.30.254 dev eth0 # kibana --> suitecrm_nw via r3
+echo -e "kibana --> dev_nw via r3"
+docker exec -u 0 -it kibana ip route add 192.168.10.0/24 via 192.168.30.254 dev eth0 # kibana --> dev_nw via r3
+echo -e "kibana --> dmz_nw via r3"
+docker exec -u 0 -it kibana ip route add 10.10.20.0/24 via 192.168.30.254 dev eth0 # kibana --> dmz_nw via r3
+echo -e "kibana --> internet_nw via r3"
+docker exec -u 0 -it kibana ip route add 172.16.10.0/24 via 192.168.30.254 dev eth0 # kibana --> internet_nw via r3
+echo -e "kibana --> r1_r2_nw via r3"
+docker exec -u 0 -it kibana ip route add 172.16.20.0/24 via 192.168.30.254 dev eth0 # kibana --> r1_r2_nw via r3
+echo -e "kibana --> r2_r3_nw via r3"
+docker exec -u 0 -it kibana ip route add 172.16.40.0/24 via 192.168.30.254 dev eth0 # kibana --> r2_r3_nw via r3
+
+
+# D. Adding firewall rules on routers
+# echo -e "${BGREEN}\n[+]${NC} D. Adding firewall rules on nodes..."
+## ip route add <network/cidr> via <next hop> dev <host network outgoing interface>
+
+# ## r2
+# iptables -A FORWARD -i eth2 -o eth1 -j ACCEPT # internal:eth2 to access external:eth1
+# iptables -A FORWARD -i eth0 -o eth1 -j ACCEPT # internal:eth0 to access external:eth1
