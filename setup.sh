@@ -321,3 +321,15 @@ docker exec -u 0 -it kibana ip route add 172.16.40.0/24 via 192.168.30.254 dev e
 # ## r2
 # iptables -A FORWARD -i eth2 -o eth1 -j ACCEPT # internal:eth2 to access external:eth1
 # iptables -A FORWARD -i eth0 -o eth1 -j ACCEPT # internal:eth0 to access external:eth1
+
+# G. Setup OpenVPN tunnel between c2 and c4 with VPN Pivoting
+docker exec d1 openvpn --genkey --secret static-OpenVPN.key
+docker exec d1 bash -c 'echo -e "mode p2p\ndev tun\nport 1194\nproto tcp-server\nifconfig 172.16.30.1 172.16.30.2\nsecret ../../static-OpenVPN.key\n;user nobody\n;group nobody\n\nkeepalive 10 60\nping-timer-rem\npersist-tun\npersist-key\n\ncomp-lzo" > /etc/openvpn/server.conf'
+docker exec d1 bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'
+docker exec d1 ufw allow from any to any port 1194 proto tcp
+docker exec d1 iptables -t nat -A POSTROUTING -s 172.16.30.2 -o eth0 -j MASQUERADE
+docker exec k1 bash -c 'echo -e "mode p2p\nremote 192.168.10.2\ndev tun\nport 1194\nproto tcp-client\nifconfig 172.16.30.2 172.16.30.1\nsecret ../../static-OpenVPN.key\ncomp-lzo\nroute-metric 15\nroute 192.168.10.0 255.255.255.0 172.16.10.1" > /etc/openvpn/client.conf'
+docker cp d1:/static-OpenVPN.key /home
+docker cp /home/static-OpenVPN.key k1:/
+docker exec d1 openvpn --config /etc/openvpn/server.conf &
+docker exec k1 openvpn --config /etc/openvpn/client.conf &
