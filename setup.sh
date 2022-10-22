@@ -331,5 +331,5 @@ docker exec d1 iptables -t nat -A POSTROUTING -s 172.16.30.2 -o eth0 -j MASQUERA
 docker exec k1 bash -c 'echo -e "mode p2p\nremote 192.168.10.2\ndev tun\nport 1194\nproto tcp-client\nifconfig 172.16.30.2 172.16.30.1\nsecret ../../static-OpenVPN.key\ncomp-lzo\nroute-metric 15\nroute 192.168.10.0 255.255.255.0 172.16.10.1" > /etc/openvpn/client.conf'
 docker cp d1:/static-OpenVPN.key /home
 docker cp /home/static-OpenVPN.key k1:/
-docker exec d1 openvpn --config /etc/openvpn/server.conf &
-docker exec k1 openvpn --config /etc/openvpn/client.conf &
+docker exec -dit d1 openvpn --config /etc/openvpn/server.conf 
+docker exec -dit k1 openvpn --config /etc/openvpn/client.conf
