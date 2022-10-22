@@ -25,8 +25,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision :docker_compose, yml: "/vagrant/docker-compose.yaml", compose_version:"v2.10.0", run: "always"
-  config.vm.provision "shell", path: "sysctl.sh", run: "always" #Change mmap counts to ensure virtual memory does not run out during installation
   
+  #Change mmap counts to ensure virtual memory does not run out during installation
   config.vm.provider "virtualbox" do |v|
     # v.gui = true
     v.name = "ICT3204"
@@ -36,8 +36,7 @@ Vagrant.configure("2") do |config|
   end
   
   # set up Docker in the new VM:
-  
-  # config.vm.provision "shell", privileged: true, run: 'always',
-  # path: "setup.sh"
+  config.vm.provision "shell", path: "sysctl.sh", run: "always" 
+  config.vm.provision "shell", privileged: true, run: 'always', path: "setup.sh"
 
 end
