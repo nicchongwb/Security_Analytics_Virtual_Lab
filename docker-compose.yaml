@@ -184,7 +184,7 @@ services:
         ipv4_address: 192.168.30.5
     volumes:
       - type: bind
-        source:  ./config/heartbeat.yml 
+        source:  ./elk_configs/heartbeat/heartbeat.yml 
         target:  /usr/share/heartbeat/heartbeat.yml
     command: heartbeat -e -strict.perms=false
     depends_on:
