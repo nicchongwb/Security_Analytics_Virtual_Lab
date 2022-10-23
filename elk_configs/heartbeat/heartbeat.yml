@@ -1,14 +1,33 @@
 heartbeat.monitors:
 - type: http
-  schedule: '@every 5s'
+  name: Elastic Web Service
+  schedule: '@every 10s'
   urls:
     - http://elasticsearch:9200
+  check.response.status: [200]
+
+- type: http
+  name: Kibana Web Service
+  schedule: '@every 10s'
+  urls:
     - http://kibana:5601
 
+- type: http
+  name: SuiteCRM Web Service
+  schedule: '@every 10s'
+  urls:
+    - http://localhost:8888/suitecrm  
+
 - type: icmp
+  name: Elastic Server Alive Satus
   schedule: '@every 5s'
   hosts:
     - elasticsearch
+
+- type: icmp
+  name: Kibana Server Alive Satus
+  schedule: '@every 5s'
+  hosts:
     - kibana
 
 processors:
