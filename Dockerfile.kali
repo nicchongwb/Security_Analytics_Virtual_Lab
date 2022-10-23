@@ -8,3 +8,6 @@ RUN apt install -y \
 RUN apt install -y python3 metasploit-framework
 ADD https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py /bin/systemctl
 RUN chmod +x /bin/systemctl
+WORKDIR /
+# Copy over PE-related files
+COPY ./Attacks/Privilege_Escalation/dirtypipe.sh ./Attacks/Privilege_Escalation/CVE-2022-0847.c ./

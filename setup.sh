@@ -335,9 +335,9 @@ docker exec -dit d1 openvpn --config /etc/openvpn/server.conf
 docker exec -dit k1 openvpn --config /etc/openvpn/client.conf
 docker exec k1 route del default
 
-#Setting filebeat on D1
-docker exec d1 bash -c 'echo "#! /bin/bash" > editfilebeat.sh'
-docker exec d1 bash -c 'echo "sed -i \"43 i - type: log\n  enabled: true\n  paths:\n    - /var/log/btmp\n  tags: [\\\"faillog\\\"]\" /etc/filebeat/filebeat.yml" >> editfilebeat.sh'
-docker exec d1 bash -c 'echo "sed -i \"48 i - type: log\n  enabled: true\n  paths:\n    - /var/log/wtmp\n  tags: [\\\"lastlog\\\"]\" /etc/filebeat/filebeat.yml" >> editfilebeat.sh'
-docker exec d1 bash -c 'chmod +x editfilebeat.sh'
-docker exec d1 bash -c './editfilebeat.sh'
+# #Setting filebeat on D1
+# docker exec d1 bash -c 'echo "#! /bin/bash" > editfilebeat.sh'
+# docker exec d1 bash -c 'echo "sed -i \"43 i - type: log\n  enabled: true\n  paths:\n    - /var/log/btmp\n  tags: [\\\"faillog\\\"]\" /etc/filebeat/filebeat.yml" >> editfilebeat.sh'
+# docker exec d1 bash -c 'echo "sed -i \"48 i - type: log\n  enabled: true\n  paths:\n    - /var/log/wtmp\n  tags: [\\\"lastlog\\\"]\" /etc/filebeat/filebeat.yml" >> editfilebeat.sh'
+# docker exec d1 bash -c 'chmod +x editfilebeat.sh'
+# docker exec d1 bash -c './editfilebeat.sh'
