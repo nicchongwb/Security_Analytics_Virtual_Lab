@@ -170,6 +170,30 @@ services:
     stdin_open: true
     tty: true
 
+  heartbeat:
+    image: docker.elastic.co/beats/heartbeat:8.4.3
+    container_name: heartbeat
+    restart: on-failure
+    hostname: heartbeat
+    user: root
+    networks:
+      elk_nw:
+        aliases: 
+          - e3
+          - kibana
+        ipv4_address: 192.168.30.5
+    volumes:
+      - type: bind
+        source:  ./config/heartbeat.yml 
+        target:  /usr/share/heartbeat/heartbeat.yml
+    command: heartbeat -e -strict.perms=false
+    depends_on:
+      - elasticsearch  
+      - kibana
+    stdin_open: true
+    tty: true
+    
+
   # Internal Router
   r1:
     image: ubuntu-network
