@@ -12,6 +12,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/* \
     && update-alternatives --set ip6tables /usr/sbin/ip6tables-nft
-COPY ./elk_config/setup_filebeat.sh ./elk_configs/filebeat/filebeat.yml ./
+COPY ./elk_configs/setup_filebeat.sh ./elk_configs/filebeat/filebeat.yml ./
 RUN chmod +x ./setup_filebeat.sh
 RUN ./setup_filebeat.sh
