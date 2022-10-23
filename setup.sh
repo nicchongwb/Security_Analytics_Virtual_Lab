@@ -93,90 +93,90 @@ echo -e "${BGREEN}\n[+]${NC} A3. Printing IP addresses of each container...${NC}
 ### suitecrm_nw
 echo -e "${BGREEN}[+]${NC} Running for ${GREEN}s1${NC}: printing network interface : IP ${GREEN} ${NC}..."
 echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -it s1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+docker exec -i s1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
-docker exec -it s1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
+docker exec -i s1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 echo -e "${BGREEN}[+]${NC} Running for ${GREEN}s2${NC}: printing network interface : IP ${GREEN} ${NC}..."
 echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -it s2 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+docker exec -i s2 ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
-docker exec -it s2 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
+docker exec -i s2 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 ### dev_nw
 echo -e "${BGREEN}\n[+]${NC} Running for ${GREEN}d1${NC}: printing network interface : IP ${GREEN} ${NC}..."
 echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -it d1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+docker exec -i d1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
-docker exec -it d1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
+docker exec -i d1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 ### dmz_nw
 echo -e "${BGREEN}\n[+]${NC} Running for ${GREEN}dmz1${NC}: printing network interface : IP ${GREEN} ${NC}..."
 echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -it dmz1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+docker exec -i dmz1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
-docker exec -it dmz1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
+docker exec -i dmz1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 
 ### kali
 echo -e "${BGREEN}\n[+]${NC} Running for ${GREEN}k1${NC}: printing network interface : IP ${GREEN} ${NC}..."
 echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -it k1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+docker exec -i k1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
-docker exec -it k1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
+docker exec -i k1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 
 ### elk_nw
 echo -e "${BGREEN}[+]${NC} Running for ${GREEN}elasticsearch${NC}: printing network interface : IP ${GREEN} ${NC}..."
 echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -it elasticsearch ip --oneline addr show | awk '{ print $2 ": " $4 }'
+docker exec -i elasticsearch ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
-docker exec -it elasticsearch ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
+docker exec -i elasticsearch ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 echo -e "${BGREEN}[+]${NC} Running for ${GREEN}logstash${NC}: printing network interface : IP ${GREEN} ${NC}..."
 echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -it logstash ip --oneline addr show | awk '{ print $2 ": " $4 }'
+docker exec -i logstash ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
-docker exec -it logstash ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
+docker exec -i logstash ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 echo -e "${BGREEN}[+]${NC} Running for ${GREEN}kibana${NC}: printing network interface : IP ${GREEN} ${NC}..."
 echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -it kibana ip --oneline addr show | awk '{ print $2 ": " $4 }'
+docker exec -i kibana ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
-docker exec -it kibana ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
+docker exec -i kibana ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 ### router
 echo -e "${BGREEN}\n[+]${NC} Running for ${GREEN}r1${NC}: printing network interface : IP ${GREEN} ${NC}..."
 echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -it r1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+docker exec -i r1 ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
-docker exec -it r1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
+docker exec -i r1 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 echo -e "${BGREEN}[+]${NC} Running for ${GREEN}r2${NC}: printing network interface : IP ${GREEN} ${NC}..."
 echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -it r2 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+docker exec -i r2 ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
-docker exec -it r2 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
+docker exec -i r2 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 echo -e "${BGREEN}[+]${NC} Running for ${GREEN}r3${NC}: printing network interface : IP ${GREEN} ${NC}..."
 echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -it r3 ip --oneline addr show | awk '{ print $2 ": " $4 }'
+docker exec -i r3 ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
-docker exec -it r3 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
+docker exec -i r3 ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 
 # B. Enabling routing on routers
 echo -e "${BGREEN}\n[+]${NC} B. Enabling routing on routers..."
 
 echo -e "${BGREEN}\n[+]${NC} Enabling routing on r1..."
-docker exec -it r1 sysctl -w net.ipv4.ip_forward=1
-docker exec -it r1 sysctl net.ipv4.ip_forward
+docker exec -i r1 sysctl -w net.ipv4.ip_forward=1
+docker exec -i r1 sysctl net.ipv4.ip_forward
 echo -e "${BGREEN}\n[+]${NC} Enabling routing on r2..."
-docker exec -it r2 sysctl -w net.ipv4.ip_forward=1
-docker exec -it r2 sysctl net.ipv4.ip_forward
+docker exec -i r2 sysctl -w net.ipv4.ip_forward=1
+docker exec -i r2 sysctl net.ipv4.ip_forward
 echo -e "${BGREEN}\n[+]${NC} Enabling routing on r3..."
-docker exec -it r3 sysctl -w net.ipv4.ip_forward=1
-docker exec -it r3 sysctl net.ipv4.ip_forward
+docker exec -i r3 sysctl -w net.ipv4.ip_forward=1
+docker exec -i r3 sysctl net.ipv4.ip_forward
 
 # C. Adding routes on nodes - including routers
 echo -e "${BGREEN}\n[+]${NC} C. Adding routes on nodes..."
@@ -185,133 +185,133 @@ echo -e "${BGREEN}\n[+]${NC} C. Adding routes on nodes..."
 ## routers - only configure for 2 bound network
 ### R1
 echo -e "r1 --> dmz_nw"
-docker exec -it r1 ip route add 10.10.20.0/24 via 172.16.20.2 dev eth1 # r1 --> dmz_nw
+docker exec -i r1 ip route add 10.10.20.0/24 via 172.16.20.2 dev eth1 # r1 --> dmz_nw
 echo -e "r1 --> internet_nw"
-docker exec -it r1 ip route add 172.16.10.0/24 via 172.16.20.2 dev eth1 # r1 --> internet_nw
+docker exec -i r1 ip route add 172.16.10.0/24 via 172.16.20.2 dev eth1 # r1 --> internet_nw
 echo -e "r1 --> elk_nw"
-docker exec -it r1 ip route add 192.168.30.0/24 via 172.16.40.2 dev eth2 # r1 --> elk_nw
+docker exec -i r1 ip route add 192.168.30.0/24 via 172.16.40.2 dev eth2 # r1 --> elk_nw
 ### R2
 echo -e "r2 --> dev_nw"
-docker exec -it r2 ip route add 192.168.10.0/24 via 172.16.20.3 dev eth2 # r2 --> dev_nw
+docker exec -i r2 ip route add 192.168.10.0/24 via 172.16.20.3 dev eth2 # r2 --> dev_nw
 echo -e "r2 --> suitecrm_nw"
-docker exec -it r2 ip route add 10.10.10.0/24 via 172.16.20.3 dev eth2 # r2 --> suitecrm_nw
+docker exec -i r2 ip route add 10.10.10.0/24 via 172.16.20.3 dev eth2 # r2 --> suitecrm_nw
 echo -e "r2 --> elk_nw"
-docker exec -it r2 ip route add 192.168.30.0/24 via 172.16.20.3 dev eth2 # r2 --> elk_nw
+docker exec -i r2 ip route add 192.168.30.0/24 via 172.16.20.3 dev eth2 # r2 --> elk_nw
 ### R3
 echo -e "r3 --> suitecrm_nw"
-docker exec -it r3 ip route add 10.10.10.0/24 via 172.16.40.3 dev eth1 # r3 --> suitecrm_nw
+docker exec -i r3 ip route add 10.10.10.0/24 via 172.16.40.3 dev eth1 # r3 --> suitecrm_nw
 echo -e "r3 --> dev_nw"
-docker exec -it r3 ip route add 192.168.10.0/24 via 172.16.40.3 dev eth1 # r3 --> dev_nw 
+docker exec -i r3 ip route add 192.168.10.0/24 via 172.16.40.3 dev eth1 # r3 --> dev_nw 
 echo -e "r3 --> dmz_nw"
-docker exec -it r3 ip route add 10.10.20.0/24 via 172.16.40.3 dev eth1 # r3 --> dmz_nw
+docker exec -i r3 ip route add 10.10.20.0/24 via 172.16.40.3 dev eth1 # r3 --> dmz_nw
 echo -e "r3 --> internet_nw"
-docker exec -it r3 ip route add 172.16.10.0/24 via 172.16.40.3 dev eth1 # r3 --> internet_nw
+docker exec -i r3 ip route add 172.16.10.0/24 via 172.16.40.3 dev eth1 # r3 --> internet_nw
 
 ## dev_nw clients
 ### D1
 echo -e "d1 --> suitecrm_nw via r1"
-docker exec -it d1 ip route add 10.10.10.0/24 via 192.168.10.254 dev eth0 # d1 --> suitecrm_nw via r1
+docker exec -i d1 ip route add 10.10.10.0/24 via 192.168.10.254 dev eth0 # d1 --> suitecrm_nw via r1
 echo -e "d1 --> dmz_nw via r1"
-docker exec -it d1 ip route add 10.10.20.0/24 via 192.168.10.254 dev eth0 # d1 --> dmz_nw via r1
+docker exec -i d1 ip route add 10.10.20.0/24 via 192.168.10.254 dev eth0 # d1 --> dmz_nw via r1
 echo -e "d1 --> elk_nw via r1"
-docker exec -it d1 ip route add 192.168.30.0/24 via 192.168.10.254 dev eth0 # d1 --> elk_nw via r1
+docker exec -i d1 ip route add 192.168.30.0/24 via 192.168.10.254 dev eth0 # d1 --> elk_nw via r1
 echo -e "d1 --> r1_r2_nw via r1"
-docker exec -it d1 ip route add 172.16.20.0/24 via 192.168.10.254 dev eth0 # d1 --> r1_r2_nw via r1
+docker exec -i d1 ip route add 172.16.20.0/24 via 192.168.10.254 dev eth0 # d1 --> r1_r2_nw via r1
 echo -e "d1 --> r2_r3_nw via r1"
-docker exec -it d1 ip route add 172.16.40.0/24 via 192.168.10.254 dev eth0 # d1 --> r2_r3_nw via r1
+docker exec -i d1 ip route add 172.16.40.0/24 via 192.168.10.254 dev eth0 # d1 --> r2_r3_nw via r1
 
 ## suitecrm_nw clients
 ### S1
 echo -e "s1 --> dmz_nw via r1"
-docker exec -it s1 ip route add 10.10.20.0/24 via 10.10.10.254 dev eth0 # s1 --> dmz_nw via r1
+docker exec -i s1 ip route add 10.10.20.0/24 via 10.10.10.254 dev eth0 # s1 --> dmz_nw via r1
 echo -e "s1 --> dev_nw via r1"
-docker exec -it s1 ip route add 192.168.10.0/24 via 10.10.10.254 dev eth0 # s1 --> dev_nw via r1
+docker exec -i s1 ip route add 192.168.10.0/24 via 10.10.10.254 dev eth0 # s1 --> dev_nw via r1
 echo -e "s1 --> elk_nw via r1"
-docker exec -it s1 ip route add 192.168.30.0/24 via 10.10.10.254 dev eth0 # s1 --> elk_nw via r1
+docker exec -i s1 ip route add 192.168.30.0/24 via 10.10.10.254 dev eth0 # s1 --> elk_nw via r1
 echo -e "s1 --> internet_nw via r1"
-docker exec -it s1 ip route add 172.16.10.0/24 via 10.10.10.254 dev eth0 # s1 --> internet_nw via r1
+docker exec -i s1 ip route add 172.16.10.0/24 via 10.10.10.254 dev eth0 # s1 --> internet_nw via r1
 echo -e "s1 --> r1_r2_nw via r1"
-docker exec -it s1 ip route add 172.16.20.0/24 via 10.10.10.254 dev eth0 # s1 --> r1_r2_nw via r1
+docker exec -i s1 ip route add 172.16.20.0/24 via 10.10.10.254 dev eth0 # s1 --> r1_r2_nw via r1
 echo -e "s1 --> r2_r3_nw via r1"
-docker exec -it s1 ip route add 172.16.40.0/24 via 10.10.10.254 dev eth0 # s1 --> r2_r3_nw via r1
+docker exec -i s1 ip route add 172.16.40.0/24 via 10.10.10.254 dev eth0 # s1 --> r2_r3_nw via r1
 ### S2
 echo -e "s2 --> dmz_nw via r1"
-docker exec -it s2 ip route add 10.10.20.0/24 via 10.10.10.254 dev eth0 # s2 --> dmz_nw via r1
+docker exec -i s2 ip route add 10.10.20.0/24 via 10.10.10.254 dev eth0 # s2 --> dmz_nw via r1
 echo -e "s2 --> dev_nw via r1"
-docker exec -it s2 ip route add 192.168.10.0/24 via 10.10.10.254 dev eth0 # s2 --> dev_nw via r1
+docker exec -i s2 ip route add 192.168.10.0/24 via 10.10.10.254 dev eth0 # s2 --> dev_nw via r1
 echo -e "s2 --> elk_nw via r1"
-docker exec -it s2 ip route add 192.168.30.0/24 via 10.10.10.254 dev eth0 # s2 --> elk_nw via r1
+docker exec -i s2 ip route add 192.168.30.0/24 via 10.10.10.254 dev eth0 # s2 --> elk_nw via r1
 echo -e "s2 --> internet_nw via r1"
-docker exec -it s2 ip route add 172.16.10.0/24 via 10.10.10.254 dev eth0 # s2 --> internet_nw via r1
+docker exec -i s2 ip route add 172.16.10.0/24 via 10.10.10.254 dev eth0 # s2 --> internet_nw via r1
 echo -e "s2 --> r1_r2_nw via r1"
-docker exec -it s2 ip route add 172.16.20.0/24 via 10.10.10.254 dev eth0 # s2 --> r1_r2_nw via r1
+docker exec -i s2 ip route add 172.16.20.0/24 via 10.10.10.254 dev eth0 # s2 --> r1_r2_nw via r1
 echo -e "s2 --> r2_r3_nw via r1"
-docker exec -it s2 ip route add 172.16.40.0/24 via 10.10.10.254 dev eth0 # s2 --> r2_r3_nw via r1
+docker exec -i s2 ip route add 172.16.40.0/24 via 10.10.10.254 dev eth0 # s2 --> r2_r3_nw via r1
 
 ## dmz_nw clients
 ### DMZ1
 echo -e "dmz1 --> suitecrm_nw via r2"
-docker exec -it dmz1 ip route add 10.10.10.0/24 via 10.10.20.254 dev eth0 # dmz1 --> suitecrm_nw via r2
+docker exec -i dmz1 ip route add 10.10.10.0/24 via 10.10.20.254 dev eth0 # dmz1 --> suitecrm_nw via r2
 echo -e "dmz1 --> dev_nw via r2"
-docker exec -it dmz1 ip route add 192.168.10.0/24 via 10.10.20.254 dev eth0 # dmz1 --> dev_nw via r2
+docker exec -i dmz1 ip route add 192.168.10.0/24 via 10.10.20.254 dev eth0 # dmz1 --> dev_nw via r2
 echo -e "dmz1 --> elk_nw via r2"
-docker exec -it dmz1 ip route add 192.168.30.0/24 via 10.10.20.254 dev eth0 # dmz1 --> elk_nw via r2
+docker exec -i dmz1 ip route add 192.168.30.0/24 via 10.10.20.254 dev eth0 # dmz1 --> elk_nw via r2
 echo -e "dmz1 --> internet_nw via r2"
-docker exec -it dmz1 ip route add 172.16.10.0/24 via 10.10.20.254 dev eth0 # dmz1 --> internet_nw via r2
+docker exec -i dmz1 ip route add 172.16.10.0/24 via 10.10.20.254 dev eth0 # dmz1 --> internet_nw via r2
 echo -e "dmz1 --> r1_r2_nw via r2"
-docker exec -it dmz1 ip route add 172.16.20.0/24 via 10.10.20.254 dev eth0 # dmz1 --> r1_r2_nw via r2
+docker exec -i dmz1 ip route add 172.16.20.0/24 via 10.10.20.254 dev eth0 # dmz1 --> r1_r2_nw via r2
 echo -e "dmz1 --> r2_r3_nw via r2"
-docker exec -it dmz1 ip route add 172.16.40.0/24 via 10.10.20.254 dev eth0 # dmz1 --> r2_r3_nw via r2
+docker exec -i dmz1 ip route add 172.16.40.0/24 via 10.10.20.254 dev eth0 # dmz1 --> r2_r3_nw via r2
 
 ## internet_nw clients
 ### K1 - in real life, this shouldn't be the case
 echo -e "k1 --> dmz_nw via r2"
-docker exec -it k1 ip route add 10.10.20.0/24 via 172.16.10.3 dev eth0 # k1 --> dmz_nw via r2
+docker exec -i k1 ip route add 10.10.20.0/24 via 172.16.10.3 dev eth0 # k1 --> dmz_nw via r2
 echo -e "k1 --> r1_r2_nw via r2"
-docker exec -it k1 ip route add 172.16.20.0/24 via 172.16.10.3 dev eth0 # k1 --> r1_r2_nw via r2
+docker exec -i k1 ip route add 172.16.20.0/24 via 172.16.10.3 dev eth0 # k1 --> r1_r2_nw via r2
 
 ## elk_nw clients
 ### elasticsearch
 echo -e "elasticsearch --> suitecrm_nw via r3"
-docker exec -u 0 -it elasticsearch ip route add 10.10.10.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> suitecrm_nw via r3
+docker exec -u 0 -i elasticsearch ip route add 10.10.10.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> suitecrm_nw via r3
 echo -e "elasticsearch --> dev_nw via r3"
-docker exec -u 0 -it elasticsearch ip route add 192.168.10.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> dev_nw via r3
+docker exec -u 0 -i elasticsearch ip route add 192.168.10.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> dev_nw via r3
 echo -e "elasticsearch --> dmz_nw via r3"
-docker exec -u 0 -it elasticsearch ip route add 10.10.20.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> dmz_nw via r3
+docker exec -u 0 -i elasticsearch ip route add 10.10.20.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> dmz_nw via r3
 echo -e "elasticsearch --> internet_nw via r3"
-docker exec -u 0 -it elasticsearch ip route add 172.16.10.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> internet_nw via r3
+docker exec -u 0 -i elasticsearch ip route add 172.16.10.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> internet_nw via r3
 echo -e "elasticsearch --> r1_r2_nw via r3"
-docker exec -u 0 -it elasticsearch ip route add 172.16.20.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> r1_r2_nw via r3
+docker exec -u 0 -i elasticsearch ip route add 172.16.20.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> r1_r2_nw via r3
 echo -e "elasticsearch --> r2_r3_nw via r3"
-docker exec -u 0 -it elasticsearch ip route add 172.16.40.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> r2_r3_nw via r3
+docker exec -u 0 -i elasticsearch ip route add 172.16.40.0/24 via 192.168.30.254 dev eth0 # elasticsearch --> r2_r3_nw via r3
 
 ### logstash
 echo -e "logstash --> suitecrm_nw via r3"
-docker exec -u 0 -it logstash ip route add 10.10.10.0/24 via 192.168.30.254 dev eth0 # logstash --> suitecrm_nw via r3
+docker exec -u 0 -i logstash ip route add 10.10.10.0/24 via 192.168.30.254 dev eth0 # logstash --> suitecrm_nw via r3
 echo -e "logstash --> dev_nw via r3"
-docker exec -u 0 -it logstash ip route add 192.168.10.0/24 via 192.168.30.254 dev eth0 # logstash --> dev_nw via r3
+docker exec -u 0 -i logstash ip route add 192.168.10.0/24 via 192.168.30.254 dev eth0 # logstash --> dev_nw via r3
 echo -e "logstash --> dmz_nw via r3"
-docker exec -u 0 -it logstash ip route add 10.10.20.0/24 via 192.168.30.254 dev eth0 # logstash --> dmz_nw via r3
+docker exec -u 0 -i logstash ip route add 10.10.20.0/24 via 192.168.30.254 dev eth0 # logstash --> dmz_nw via r3
 echo -e "logstash --> internet_nw via r3"
-docker exec -u 0 -it logstash ip route add 172.16.10.0/24 via 192.168.30.254 dev eth0 # logstash --> internet_nw via r3
+docker exec -u 0 -i logstash ip route add 172.16.10.0/24 via 192.168.30.254 dev eth0 # logstash --> internet_nw via r3
 echo -e "logstash --> r1_r2_nw via r3"
-docker exec -u 0 -it logstash ip route add 172.16.20.0/24 via 192.168.30.254 dev eth0 # logstash --> r1_r2_nw via r3
+docker exec -u 0 -i logstash ip route add 172.16.20.0/24 via 192.168.30.254 dev eth0 # logstash --> r1_r2_nw via r3
 echo -e "logstash --> r2_r3_nw via r3"
-docker exec -u 0 -it logstash ip route add 172.16.40.0/24 via 192.168.30.254 dev eth0 # logstash --> r2_r3_nw via r3
+docker exec -u 0 -i logstash ip route add 172.16.40.0/24 via 192.168.30.254 dev eth0 # logstash --> r2_r3_nw via r3
 
 ### kibana
 echo -e "kibana --> suitecrm_nw via r3"
-docker exec -u 0 -it kibana ip route add 10.10.10.0/24 via 192.168.30.254 dev eth0 # kibana --> suitecrm_nw via r3
+docker exec -u 0 -i kibana ip route add 10.10.10.0/24 via 192.168.30.254 dev eth0 # kibana --> suitecrm_nw via r3
 echo -e "kibana --> dev_nw via r3"
-docker exec -u 0 -it kibana ip route add 192.168.10.0/24 via 192.168.30.254 dev eth0 # kibana --> dev_nw via r3
+docker exec -u 0 -i kibana ip route add 192.168.10.0/24 via 192.168.30.254 dev eth0 # kibana --> dev_nw via r3
 echo -e "kibana --> dmz_nw via r3"
-docker exec -u 0 -it kibana ip route add 10.10.20.0/24 via 192.168.30.254 dev eth0 # kibana --> dmz_nw via r3
+docker exec -u 0 -i kibana ip route add 10.10.20.0/24 via 192.168.30.254 dev eth0 # kibana --> dmz_nw via r3
 echo -e "kibana --> internet_nw via r3"
-docker exec -u 0 -it kibana ip route add 172.16.10.0/24 via 192.168.30.254 dev eth0 # kibana --> internet_nw via r3
+docker exec -u 0 -i kibana ip route add 172.16.10.0/24 via 192.168.30.254 dev eth0 # kibana --> internet_nw via r3
 echo -e "kibana --> r1_r2_nw via r3"
-docker exec -u 0 -it kibana ip route add 172.16.20.0/24 via 192.168.30.254 dev eth0 # kibana --> r1_r2_nw via r3
+docker exec -u 0 -i kibana ip route add 172.16.20.0/24 via 192.168.30.254 dev eth0 # kibana --> r1_r2_nw via r3
 echo -e "kibana --> r2_r3_nw via r3"
-docker exec -u 0 -it kibana ip route add 172.16.40.0/24 via 192.168.30.254 dev eth0 # kibana --> r2_r3_nw via r3
+docker exec -u 0 -i kibana ip route add 172.16.40.0/24 via 192.168.30.254 dev eth0 # kibana --> r2_r3_nw via r3
 
 
 # D. Adding firewall rules on routers
