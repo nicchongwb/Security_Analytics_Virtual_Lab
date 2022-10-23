@@ -179,8 +179,8 @@ services:
     networks:
       elk_nw:
         aliases: 
-          - e3
-          - kibana
+          - e4
+          - heartbeat
         ipv4_address: 192.168.30.5
     volumes:
       - type: bind
