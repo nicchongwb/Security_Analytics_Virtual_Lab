@@ -171,7 +171,7 @@ services:
     tty: true
 
   heartbeat:
-    image: docker.elastic.co/beats/heartbeat:8.4.3
+    image: heartbeat
     container_name: heartbeat
     restart: on-failure
     hostname: heartbeat
