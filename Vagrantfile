@@ -22,6 +22,7 @@ Vagrant.configure("2") do |config|
     d.build_image "/vagrant/", args: "-t elasticsearch -f /vagrant/Dockerfile.elastic"
     d.build_image "/vagrant/", args: "-t logstash -f /vagrant/Dockerfile.logstash"
     d.build_image "/vagrant/", args: "-t kibana -f /vagrant/Dockerfile.kibana"
+    d.build_image "/vagrant/", args: "-t heartbeat -f /vagrant/Dockerfile.heartbeat"
   end
 
   config.vm.provision :docker_compose, yml: "/vagrant/docker-compose.yaml", compose_version:"v2.10.0", run: "always"
