@@ -35,6 +35,15 @@ docker exec -it logstash ping -c 4 192.168.30.254
 #### kibana
 echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r3_eth0 from kibana_eth0${NC}..."
 docker exec -it kibana ping -c 4 192.168.30.254
+#### heartbeat
+echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r3_eth0 from heartbeat_eth0${NC}..."
+docker exec -it heartbeat ping -c 4 192.168.30.254
+#### metricbeat
+echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r3_eth0 from metricbeat_eth0${NC}..."
+docker exec -it metricbeat ping -c 4 192.168.30.254
+#### packetbeat
+echo -e "\n${BGREEN}[+]${NC} Pinging ${GREEN}r3_eth0 from packetbeat_eth0${NC}..."
+docker exec -it packetbeat ping -c 4 192.168.30.254
 
 ### dmz_nw
 #### DMZ1
@@ -76,10 +85,15 @@ echo -e "${BGREEN}[+]${NC} Pinging r1 from logstash..."
 docker exec -it logstash ping -c 4 172.16.40.3
 echo -e "${BGREEN}[+]${NC} Pinging r1 from kibana..."
 docker exec -it kibana ping -c 4 172.16.40.3
-
+echo -e "${BGREEN}[+]${NC} Pinging r1 from heartbeat..."
+docker exec -it heartbeat ping -c 4 172.16.40.3
+echo -e "${BGREEN}[+]${NC} Pinging r1 from metricbeat..."
+docker exec -it metricbeat ping -c 4 172.16.40.3
+echo -e "${BGREEN}[+]${NC} Pinging r1 from packetbeat..."
+docker exec -it packetbeat ping -c 4 172.16.40.3
 
 ## F3. SECOND-BOUND ping
-cho -e "\n${BGREEN}[+]${NC} F3. ${GREEN}SECOND-BOUND ${NC} PING TEST${NC}..."
+echo -e "\n${BGREEN}[+]${NC} F3. ${GREEN}SECOND-BOUND ${NC} PING TEST${NC}..."
 
 echo -e "\n${BGREEN}[+]${NC} F3.1 ${GREEN}SECOND-BOUND from dev_nw${NC} PING TEST${NC}..."
 echo -e "${BGREEN}[+]${NC} Pinging dmz1 from d1..."
@@ -90,6 +104,12 @@ echo -e "${BGREEN}[+]${NC} Pinging logstash from d1..."
 docker exec -it d1 ping -c 4 192.168.30.3
 echo -e "${BGREEN}[+]${NC} Pinging kibana from d1..."
 docker exec -it d1 ping -c 4 192.168.30.4
+echo -e "${BGREEN}[+]${NC} Pinging heartbeat from d1..."
+docker exec -it d1 ping -c 4 192.168.30.5
+echo -e "${BGREEN}[+]${NC} Pinging metricbeat from d1..."
+docker exec -it d1 ping -c 4 192.168.30.6
+echo -e "${BGREEN}[+]${NC} Pinging packetbeat from d1..."
+docker exec -it d1 ping -c 4 192.168.30.7
 
 echo -e "\n${BGREEN}[+]${NC} F3.2 ${GREEN}SECOND-BOUND from dmz_nw${NC} PING TEST${NC}..."
 echo -e "${BGREEN}[+]${NC} Pinging d1 from dmz1..."
@@ -123,6 +143,26 @@ docker exec -it kibana ping -c 4 10.10.10.2
 echo -e "${BGREEN}[+]${NC} Pinging s2 from kibana..."
 docker exec -it kibana ping -c 4 10.10.10.3
 
+echo -e "\n${BGREEN}[+]${NC} Pinging d1 from heartbeat..."
+docker exec -it heartbeat ping -c 4 192.168.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s1 from heartbeat..."
+docker exec -it heartbeat ping -c 4 10.10.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s2 from heartbeat..."
+docker exec -it heartbeat ping -c 4 10.10.10.3
+
+echo -e "\n${BGREEN}[+]${NC} Pinging d1 from metricbeat..."
+docker exec -it metricbeat ping -c 4 192.168.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s1 from metricbeat..."
+docker exec -it metricbeat ping -c 4 10.10.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s2 from metricbeat..."
+docker exec -it metricbeat ping -c 4 10.10.10.3
+
+echo -e "\n${BGREEN}[+]${NC} Pinging d1 from packetbeat..."
+docker exec -it packetbeat ping -c 4 192.168.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s1 from packetbeat..."
+docker exec -it packetbeat ping -c 4 10.10.10.2
+echo -e "${BGREEN}[+]${NC} Pinging s2 from packetbeat..."
+docker exec -it packetbeat ping -c 4 10.10.10.3
 
 echo -e "\n${BGREEN}[+]${NC} F3.1 ${GREEN}THIRD-BOUND from dmz_nw${NC} PING TEST${NC}..."
 echo -e "${BGREEN}[+]${NC} Pinging elasticsearch from dmz1..."
@@ -131,3 +171,9 @@ echo -e "${BGREEN}[+]${NC} Pinging logstash from dmz1..."
 docker exec -it dmz1 ping -c 4 192.168.30.3
 echo -e "${BGREEN}[+]${NC} Pinging kibana from dmz1..."
 docker exec -it dmz1 ping -c 4 192.168.30.4
+echo -e "${BGREEN}[+]${NC} Pinging heartbeat from dmz1..."
+docker exec -it dmz1 ping -c 4 192.168.30.5
+echo -e "${BGREEN}[+]${NC} Pinging metricbeat from dmz1..."
+docker exec -it dmz1 ping -c 4 192.168.30.6
+echo -e "${BGREEN}[+]${NC} Pinging packetbeat from dmz1..."
+docker exec -it dmz1 ping -c 4 192.168.30.7

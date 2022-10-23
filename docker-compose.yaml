@@ -175,7 +175,7 @@ services:
     container_name: heartbeat
     restart: on-failure
     hostname: heartbeat
-    user: root
+    privileged: true
     networks:
       elk_nw:
         aliases: 
@@ -193,6 +193,53 @@ services:
     stdin_open: true
     tty: true
     
+  metricbeat:
+    image: ubuntu-network
+    container_name: metricbeat
+    privileged: true # comment this out after switching to actual image
+    # restart: on-failure
+    hostname: metricbeat
+    # user: root
+    networks:
+      elk_nw:
+        aliases: 
+          - e5
+          - metricbeat
+        ipv4_address: 192.168.30.6
+    # volumes:
+    #   - type: bind
+    #     source:  ./elk_configs/metricbeat/metricbeat.yml 
+    #     target:  /usr/share/metricbeat/metricbeat.yml
+    # command: metricbeat -e -strict.perms=false
+    # depends_on:
+    #   - elasticsearch  
+    #   - kibana
+    stdin_open: true
+    tty: true
+
+  packetbeat:
+    image: ubuntu-network
+    container_name: packetbeat
+    privileged: true # comment this out after switching to actual image
+    # restart: on-failure
+    hostname: packetbeat
+    # user: root
+    networks:
+      elk_nw:
+        aliases: 
+          - e5
+          - packetbeat
+        ipv4_address: 192.168.30.7
+    # volumes:
+    #   - type: bind
+    #     source:  ./elk_configs/packetbeat/packetbeat.yml 
+    #     target:  /usr/share/packetbeat/packetbeat.yml
+    # command: packetbeat -e -strict.perms=false
+    # depends_on:
+    #   - elasticsearch  
+    #   - kibana
+    stdin_open: true
+    tty: true
 
   # Internal Router
   r1:
