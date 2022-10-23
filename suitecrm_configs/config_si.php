@@ -6,7 +6,8 @@ $sugar_config_si = array(
 #'setup_db_sugarsales_password' => 'DB_USER_PASSWORD', //comment to use existing user
 'setup_db_database_name' => 'suitecrm',
 'setup_db_type' => 'mysql',
-'setup_db_pop_demo_data' => false,
+// 'setup_db_pop_demo_data' => true,
+'demoData' => 'yes',
 // create the database
 'setup_db_create_database' => 0,
 // create the user
@@ -19,7 +20,7 @@ $sugar_config_si = array(
 'setup_db_admin_user_name' => 'Admin',
 'setup_db_admin_password' => 'Admin',
 
-'setup_site_url' => 'http://127.0.0.1/suitecrm',
+'setup_site_url' => 'http://127.0.0.1/',
 'setup_site_admin_user_name'=>'Admin',
 'setup_site_admin_password' => 'Admin',
 'setup_license_key' => 'LICENSE_KEY',
