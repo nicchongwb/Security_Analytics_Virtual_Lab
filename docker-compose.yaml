@@ -207,6 +207,8 @@ services:
           - e5
           - metricbeat
         ipv4_address: 192.168.30.6
+    ports:
+    - '5066:5066'
     # volumes:
      #- ./elk_configs/metricbeat/metricbeat.yml:metricbeat/metricbeat.yml
     # command: metricbeat -e -strict.perms=false
