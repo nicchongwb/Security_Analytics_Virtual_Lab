@@ -11,3 +11,5 @@ RUN chmod +x /bin/systemctl
 WORKDIR /
 # Copy over PE-related files
 COPY ./Attacks/Privilege_Escalation/dirtypipe.sh ./Attacks/Privilege_Escalation/CVE-2022-0847.c ./
+# Copy over Execution-related files
+COPY ./Attacks/Execution/50531.rb ./Attacks/Execution/MsfAutoExploit.rc ./
