@@ -10,4 +10,5 @@ docker exec d1 service ssh start
 # Run discovery.sh in VM host
 docker cp /vagrant/Attacks/Discovery/discovery.sh s1:/
 docker exec s1 chmod +x discovery.sh
+
 # docker exec s1 ./discovery.sh
