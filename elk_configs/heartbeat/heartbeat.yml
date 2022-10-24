@@ -16,7 +16,7 @@ heartbeat.monitors:
   name: SuiteCRM Web Service
   schedule: '@every 10s'
   urls:
-    - http://192.168.1.201:8888/suitecrm  
+    - http://192.168.1.201:8888
 
 - type: icmp
   name: Elastic Server Alive Satus
