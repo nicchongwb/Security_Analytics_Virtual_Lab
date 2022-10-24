@@ -15,8 +15,10 @@ heartbeat.monitors:
 - type: http
   name: SuiteCRM Web Service
   schedule: '@every 10s'
+  max_redirects: 2
   urls:
     - http://192.168.1.201:8888
+  check.response.status: [200]
 
 - type: icmp
   name: Elastic Server Alive Satus
@@ -29,6 +31,12 @@ heartbeat.monitors:
   schedule: '@every 5s'
   hosts:
     - kibana
+  
+- type: icmp
+  name: ELK Router Server Alive Satus
+  schedule: '@every 5s'
+  hosts:
+    - r3
 
 processors:
 - add_cloud_metadata: ~

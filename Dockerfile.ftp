@@ -1,0 +1,5 @@
+FROM ubuntu-network
+
+USER root
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -y proftpd
