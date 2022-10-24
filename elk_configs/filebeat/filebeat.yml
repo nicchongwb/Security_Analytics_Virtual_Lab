@@ -37,6 +37,14 @@ filebeat.inputs:
     - /var/log/wtmp
   tags: ["lastlog"]
 
+# For ProFTPD
+- type: log
+  enabled: true
+  paths:
+    - /var/log/proftpd/xferlog
+    - /var/log/proftpd/proftpd.log
+  tags: ["proftpd"]
+
 # ============================== Filebeat modules ==============================
 
 filebeat.config.modules:

