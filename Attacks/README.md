@@ -1,6 +1,11 @@
 # Recon
 ```bash
-
+#Reconnaissance
+#copy recon.sh into k1
+docker cp /vagrant/Attacks/Recon/recon.sh k1:/
+docker exec k1 chmod +x recon.sh
+#Run the script
+docker exec k1 ./recon.sh
 ```
 
 # Execution
