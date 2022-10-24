@@ -3,3 +3,14 @@ FROM ubuntu-network
 USER root
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y proftpd
+
+RUN rm /etc/proftpd/proftpd.conf
+ADD ./ftp_config/proftpd.conf /etc/proftpd/proftpd.conf
+
+RUN echo '/bin/false' >> /etc/shells
+RUN useradd sysengineer -d /home/sysengineer -s /bin/false
+RUN echo 'sysengineer':'james' | chpasswd
+RUN mkdir /home/sysengineer
+RUN chown -R sysengineer:sysengineer home/sysengineer
+
+RUN service proftpd start
