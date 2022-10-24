@@ -13,4 +13,4 @@ RUN echo 'sysengineer':'james' | chpasswd
 RUN mkdir /home/sysengineer
 RUN chown -R sysengineer:sysengineer home/sysengineer
 
-RUN service proftpd start
+RUN systemctl enable proftpd.service
