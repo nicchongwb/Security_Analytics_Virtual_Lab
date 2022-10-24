@@ -1,13 +1,13 @@
 heartbeat.monitors:
 - type: http
-  name: Elastic Web Service
+  name: Elastic Web Service Status
   schedule: '@every 10s'
   urls:
     - http://elasticsearch:9200
   check.response.status: [200]
 
 - type: http
-  name: Kibana Web Service
+  name: Kibana Web Service Status
   schedule: '@every 10s'
   urls:
     - http://kibana:5601
@@ -21,19 +21,19 @@ heartbeat.monitors:
   check.response.status: [200]
 
 - type: icmp
-  name: Elastic Server Alive Satus
+  name: Elastic Server Alive Status
   schedule: '@every 5s'
   hosts:
     - elasticsearch
 
 - type: icmp
-  name: Kibana Server Alive Satus
+  name: Kibana Server Alive Status
   schedule: '@every 5s'
   hosts:
     - kibana
   
 - type: icmp
-  name: ELK Router Server Alive Satus
+  name: ELK Router Server Alive Status
   schedule: '@every 5s'
   hosts:
     - r3
