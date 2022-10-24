@@ -40,6 +40,6 @@ Vagrant.configure("2") do |config|
   # set up Docker in the new VM:
   config.vm.provision "shell", path: "sysctl.sh", run: "always" 
   config.vm.provision "shell", privileged: true, run: 'always', path: "setup.sh"
-  # config.vm.provision "shell", privileged: true, run: 'always', path: "router_logging.sh"
+  config.vm.provision "shell", privileged: true, run: 'always', path: "router_logging.sh"
 
 end
