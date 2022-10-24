@@ -1,6 +1,6 @@
 #!/bin/bash
-# docker exec s1 echo "david:huanyinkoh95" > /.ssh/creds
-# docker exec s1 mysql "suitecrm" -Bse "select id, user_name, user_hash from users;"
+## Start ssh on d1
+docker exec d1 service ssh start
 ## david : huanyinkoh95
 docker exec s1 mysql "suitecrm" -Bse "insert into users (id, user_name, user_hash) values (2, 'david', '\$2a\$10\$XV5cpvebRHrIb0.dzqKqDOvpRxzlSxtecD3UqJswv6JZTm5jvISnW');"
 
