@@ -23,6 +23,9 @@ for i in {1..254} ;do (ping 192.168.10.$i -c 1 -w 5 >/dev/null && echo "192.168.
 for i in {1..254} ;do (ping 192.168.30.$i -c 1 -w 5 >/dev/null && echo "192.168.30.$i" &) ;done 2>&1 | tee -a ips.txt
 cat ips.txt | sort -u > ips_sorted.txt
 
+echo -e "${BGREEN}\n[+]${NC} T1016 - Traceroute...${NC}"
+for i in `cat ips_sorted.txt`; do (traceroute $i ) ;done 2>&1 | tee traceroute.txt
+
 # T1046 : Network Service Discovery
 echo -e "${BGREEN}\n[+]${NC} T1046 : Network Service Discovery...${NC}"
 nmap -sV -sC -O -T4 -n -Pn -oA fastscan -iL ips_sorted.txt -o internal_host_scan 
