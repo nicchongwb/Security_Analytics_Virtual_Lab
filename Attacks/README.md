@@ -5,8 +5,12 @@
 
 # Execution
 ```bash
-
-
+# Execution
+cd /vagrant/Attacks/Execution
+# copy exploit to metasploit framework directory
+cp 50531.rb /usr/share/metasploit-framework/modules/exploits/linux/
+# run msfconsole with the resource script to auto exploit with the set configurations
+msfconsole -r MsfAutoExploit.rc
 ```
 
 # Privilege Escalation
