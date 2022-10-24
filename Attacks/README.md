@@ -15,7 +15,7 @@ cd /vagrant/Attacks/Execution
 # copy exploit to metasploit framework directory
 docker cp 50531.rb k1:/usr/share/metasploit-framework/modules/exploits/linux/
 # run msfconsole with the resource script to auto exploit with the set configurations
-docker exec -t k1 msfconsole -r MsfAutoExploit.rc
+docker exec -it k1 msfconsole -r MsfAutoExploit.rc
 ```
 
 # Privilege Escalation
