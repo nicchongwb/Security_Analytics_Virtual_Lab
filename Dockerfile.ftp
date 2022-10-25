@@ -10,8 +10,10 @@ ADD ./ftp_config/proftpd.conf /etc/proftpd/proftpd.conf
 RUN echo '/bin/false' >> /etc/shells
 RUN useradd sysengineer -d /home/sysengineer -s /bin/false
 RUN echo 'sysengineer':'james' | chpasswd
-RUN mkdir /home/sysengineer
-RUN chown -R sysengineer:sysengineer home/sysengineer
+RUN mkdir /home/passsecure
+RUN chown -R sysengineer:sysengineer home/passsecure
+RUN echo "2022 PassSecure Q1 Financial Records" > /home/passsecure/FinanceRecords
+
 WORKDIR /
 COPY ./elk_configs/setup_filebeat.sh ./elk_configs/filebeat/filebeat.yml ./
 RUN chmod +x ./setup_filebeat.sh
