@@ -54,3 +54,14 @@ sudo docker exec -it c1 ping -c 4 192.168.10.2
 
 # Network Topology
 ![](./topology.png)
+
+# Retrieving logs
+Retrieveing to ubuntu host to mounted /vagrant folder
+```bash
+# Retrieving raw pcap files
+cd /vagrant/logs # in Ubuntu VM
+chmod +x retrieve_logs.sh
+./retrieve_logs.sh
+
+
+```
