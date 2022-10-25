@@ -31,7 +31,7 @@ RUN echo "Creating users for attack simulations"
 RUN useradd james -s /bin/false
 RUN echo 'james':'Bond007' | chpasswd
 RUN useradd iverson -s /bin/false
-RUN echo 'iverson':'WhiteneyHouston33!' | chpasswd
+RUN echo 'iverson':'iverson' | chpasswd
 # Install and configure Filebeat
 RUN echo "Installing Filebeat..."
 RUN ./setup_filebeat.sh
