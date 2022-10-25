@@ -60,14 +60,16 @@ cd /vagrant/Attacks/Exfiltration
 ./exfiltration_setup.sh
 
 # During this stage, attacker should have root in S1
-./exfiltration_s1.sh # Run this in s1 root shell --> script is located in root / dir
+./exfiltration_s1.sh # Run this in s1 root shell --> script is located in the / directory
 ./exfiltration_k1.sh # Run this at k1 root directory
 ```
 
 # Credential Access
 ```bash
-cd /vagrant/Attacks/Credential_Access
-# Access S2 FTP Server with new found credentials from suiteCRM
+On Kali Machine
+cd /exfilstuff/etc/
+john shadow > results
+# Access S2 FTP Server with cracked john credentials obtained from suiteCRM
 python3 Auto_FTP.py <target> <port> <username> <password>
 ```
 
