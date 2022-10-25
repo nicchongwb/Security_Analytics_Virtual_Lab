@@ -194,12 +194,11 @@ services:
     tty: true
     
   metricbeat:
-    image: ubuntu-network
+    image: metricbeat
     container_name: metricbeat
     hostname: metricbeat
-    privileged: true # comment this out after switching to actual image
+    privileged: true
     # restart: on-failure
-    # user: root
     networks:
       elk_nw:
         aliases: 
@@ -208,12 +207,12 @@ services:
         ipv4_address: 192.168.30.6
     ports:
     - '5066:5066'
-    # volumes:
-     #- ./elk_configs/metricbeat/metricbeat.yml:metricbeat/metricbeat.yml
+    volumes:
+     - ./elk_configs/metricbeat/metricbeat.yml:metricbeat/metricbeat.yml
     # command: metricbeat -e -strict.perms=false
-    # depends_on:
-    #   - elasticsearch  
-    #   - kibana
+    depends_on:
+      - elasticsearch  
+      - kibana
     stdin_open: true
     tty: true
 
