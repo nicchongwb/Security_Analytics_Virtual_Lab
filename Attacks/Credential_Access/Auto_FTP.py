@@ -29,10 +29,12 @@ def main():
         sys.exit(-1)
     
     host = sys.argv[1] # hostname or IP address of the FTP server
-    
-    user = "sysengineer" # username of the FTP server
-    
+
     port = int(sys.argv[2]) # port of FTP
+
+    user = sys.argv[3] #Username of the FTP Server
+
+    passwords = sys.argv[4] #Password of the FTP Server
     
     passwords = ["james1", "james"] # read the wordlist of passwords
     print("[+] Passwords to try:", len(passwords))
