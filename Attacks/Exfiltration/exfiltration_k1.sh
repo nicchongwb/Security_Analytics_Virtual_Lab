@@ -13,6 +13,7 @@ echo -e "${BGREEN}\n[+]${NC} Decrypting the exfil file...${NC}"
 python2 decloakify.py ignorethis.cloaked pokemonGo > exfildata.zip
 
 echo -e "${BGREEN}\n[+]${NC} Unzipping...${NC}"
-unzip exfildata.zip
+mkdir /exfilstuff
+unzip exfildata.zip -d /exfilstuff
 
 echo -e "${BLUE}\n[+]${NC} All done! Check inside the exfilstuff folder${NC}"
