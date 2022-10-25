@@ -2,7 +2,7 @@
 
 echo "---- NMAP ----"
 echo "Running NMAP..."
-nmap -e tun0 -sn 10.0.0.0/8 172.16-31.0.0/16 192.168.0.0/16 -oG - | awk '/Up$/{print $2}' > results
+nmap -e tun0 -sn 10.10.10.0/24 10.10.20.0/24 172.16.20.0/24 172.16.40.0/24 192.168.10.0/24 -oG - | awk '/Up$/{print $2}' > results
 echo "The following hosts are up..."
 cat results
 
