@@ -1,7 +1,6 @@
 import ftplib
 
 def FTPAccess(host, port, user, password):
-    
     server = ftplib.FTP() # initialize FTP server object
     print(f"[!] Trying", password)
     try:
@@ -16,7 +15,7 @@ def FTPAccess(host, port, user, password):
         return True
 
 def main(): 
-    print("FTP Bruteforce Script")
+    print("FTP Server Automation Script")
     
     host = "10.10.10.3" # hostname or IP address of the FTP server
     
