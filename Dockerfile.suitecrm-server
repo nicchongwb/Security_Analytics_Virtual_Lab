@@ -13,7 +13,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
         python3     python3-pip     virtualenv  inetutils-ping \
         unzip       zip             make        vim \
         iproute2    iptables        tcpdump     openvpn         sshpass \
-        syslog-ng   php7.4 php7.4-imagick php7.4-fpm php7.4-mysql php7.4-common php7.4-gd php7.4-imap php7.4-json php7.4-curl php7.4-zip php7.4-xml php7.4-mbstring php7.4-bz2 php7.4-intl php7.4-gmp libapache2-mod-php7.4 mariadb-server expect
+        syslog-ng   php7.4 php7.4-imagick php7.4-fpm php7.4-mysql php7.4-common php7.4-gd php7.4-imap php7.4-json php7.4-curl php7.4-zip php7.4-xml php7.4-mbstring php7.4-bz2 php7.4-intl php7.4-gmp libapache2-mod-php7.4 mariadb-server expect python2-minimal
 WORKDIR /
 COPY ./suitecrm_configs/install_suitecrm.sh ./suitecrm_configs/config_si.php ./suitecrm_configs/configure_mariadb.sh ./suitecrm_configs/init_db.sh ./elk_configs/setup_filebeat.sh ./elk_configs/filebeat/filebeat.yml ./
 RUN chmod +x ./install_suitecrm.sh ./config_si.php ./configure_mariadb.sh ./init_db.sh ./setup_filebeat.sh
