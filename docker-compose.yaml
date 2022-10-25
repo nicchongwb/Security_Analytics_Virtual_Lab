@@ -208,8 +208,8 @@ services:
     ports:
     - '5066:5066'
     volumes:
-     - ./elk_configs/metricbeat/metricbeat.yml:metricbeat/metricbeat.yml
-    # command: metricbeat -e -strict.perms=false
+     - ./elk_configs/metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+    command: ["--strict.perms=false"]
     depends_on:
       - elasticsearch  
       - kibana
