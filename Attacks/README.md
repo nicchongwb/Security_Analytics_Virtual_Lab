@@ -67,8 +67,9 @@ cd /vagrant/Attacks/Exfiltration
 # Credential Access
 ```bash
 On Kali Machine
-cd /
-# Access S2 FTP Server with new found credentials from suiteCRM
+cd /exfilstuff/etc/
+john shadow > results
+# Access S2 FTP Server with cracked john credentials obtained from suiteCRM
 python3 Auto_FTP.py <target> <port> <username> <password>
 ```
 
