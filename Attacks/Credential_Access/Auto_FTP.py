@@ -10,7 +10,9 @@ def FTPAccess(host, port, user, password):
     except ftplib.error_perm:
         return False  # Login failed, wrong credentials
     else:
-        print("[+] Found credentials to FTP Server:", password) # Correct credentials
+        print("[+] Login to FTP Server success:", password) # Correct credentials
+        print("[+] Listing FTP Directory")
+        print(server.dir())
         files = []
         files = server.nlst()
         for file in files:
@@ -23,7 +25,7 @@ def FTPAccess(host, port, user, password):
 
 def main(): 
     print("FTP Server Access Automation Script")
-    if(len(sys.argv) != 3):
+    if(len(sys.argv) != 5):
         print("(+) usage: %s <target> <port>" % sys.argv[0])
         print('(+) eg: %s 192.168.121.103' % sys.argv[0])
         sys.exit(-1)
@@ -36,7 +38,6 @@ def main():
 
     passwords = sys.argv[4] #Password of the FTP Server
     
-    passwords = ["james1", "james"] # read the wordlist of passwords
     print("[+] Passwords to try:", len(passwords))
 
     for password in passwords:
