@@ -21,7 +21,7 @@ services:
 
   # SuiteCRM
   s2:
-    image: ubuntu-network
+    image: ftp
     container_name: s2
     privileged: true
     networks: 
