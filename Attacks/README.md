@@ -64,7 +64,7 @@ docker exec -it s1 bash
 ```bash
 cd /vagrant/Attacks/Credential Access
 # Access S2 FTP Server with new found credentials from suiteCRM
-python3 FTP_Access_Automation.py <target> <port> <username> <password>
+python3 FTP_Auto.py <target> <port> <username> <password>
 ```
 
 Files to be exfiltrated in S1:
