@@ -31,7 +31,13 @@ heartbeat.monitors:
   schedule: '@every 5s'
   hosts:
     - kibana
-  
+    
+- type: icmp
+  name: Logstash Server Alive Status
+  schedule: '@every 5s'
+  hosts:
+    - logstash
+    
 - type: icmp
   name: ELK Router Server Alive Status
   schedule: '@every 5s'
