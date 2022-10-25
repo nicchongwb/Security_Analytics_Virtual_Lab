@@ -207,8 +207,6 @@ services:
         ipv4_address: 192.168.30.6
     ports:
     - '5066:5066'
-    volumes:
-     - ./elk_configs/metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
     command: ["--strict.perms=false"]
     depends_on:
       - elasticsearch  
