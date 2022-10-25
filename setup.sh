@@ -45,8 +45,6 @@ heartbeat_id=$(docker ps --format "{{.ID}}" --filter name=heartbeat)
 echo "heartbeat_id=${heartbeat_id}"
 metricbeat_id=$(docker ps --format "{{.ID}}" --filter name=metricbeat)
 echo "metricbeat_id=${metricbeat_id}"
-packetbeat_id=$(docker ps --format "{{.ID}}" --filter name=packetbeat)
-echo "packetbeat_id=${packetbeat_id}"
 
 ### routers
 r1_id=$(docker ps --format "{{.ID}}" --filter name=r1)
@@ -88,8 +86,6 @@ heartbeat_id=$(docker inspect -f "{{.State.Pid}}" ${heartbeat_id})
 echo "heartbeat_id=${heartbeat_id}"
 metricbeat_id=$(docker inspect -f "{{.State.Pid}}" ${metricbeat_id})
 echo "metricbeat_id=${metricbeat_id}"
-packetbeat_id=$(docker inspect -f "{{.State.Pid}}" ${packetbeat_id})
-echo "packetbeat_id=${packetbeat_id}"
 
 ### routers
 r1_id=$(docker inspect -f "{{.State.Pid}}" ${r1_id})
@@ -169,11 +165,6 @@ docker exec -i metricbeat ip --oneline addr show | awk '{ print $2 ": " $4 }'
 echo -e "${BLUE}Routes:${NC}"
 docker exec -i metricbeat ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
-echo -e "${BGREEN}[+]${NC} Running for ${GREEN}packetbeat${NC}: printing network interface : IP ${GREEN} ${NC}..."
-echo -e "${BLUE}Network Interfaces:${NC}"
-docker exec -i packetbeat ip --oneline addr show | awk '{ print $2 ": " $4 }'
-echo -e "${BLUE}Routes:${NC}"
-docker exec -i packetbeat ip route | awk '{ print "ip: " $1 " | default gw: " $9}'
 
 ### router
 echo -e "${BGREEN}\n[+]${NC} Running for ${GREEN}r1${NC}: printing network interface : IP ${GREEN} ${NC}..."
@@ -372,19 +363,6 @@ docker exec -u 0 -i metricbeat ip route add 172.16.20.0/24 via 192.168.30.254 de
 echo -e "metricbeat --> r2_r3_nw via r3"
 docker exec -u 0 -i metricbeat ip route add 172.16.40.0/24 via 192.168.30.254 dev eth0 # metricbeat --> r2_r3_nw via r3
 
-### packetbeat
-echo -e "packetbeat --> suitecrm_nw via r3"
-docker exec -u 0 -i packetbeat ip route add 10.10.10.0/24 via 192.168.30.254 dev eth0 # packetbeat --> suitecrm_nw via r3
-echo -e "packetbeat --> dev_nw via r3"
-docker exec -u 0 -i packetbeat ip route add 192.168.10.0/24 via 192.168.30.254 dev eth0 # packetbeat --> dev_nw via r3
-echo -e "packetbeat --> dmz_nw via r3"
-docker exec -u 0 -i packetbeat ip route add 10.10.20.0/24 via 192.168.30.254 dev eth0 # packetbeat --> dmz_nw via r3
-echo -e "packetbeat --> internet_nw via r3"
-docker exec -u 0 -i packetbeat ip route add 172.16.10.0/24 via 192.168.30.254 dev eth0 # packetbeat --> internet_nw via r3
-echo -e "packetbeat --> r1_r2_nw via r3"
-docker exec -u 0 -i packetbeat ip route add 172.16.20.0/24 via 192.168.30.254 dev eth0 # packetbeat --> r1_r2_nw via r3
-echo -e "packetbeat --> r2_r3_nw via r3"
-docker exec -u 0 -i packetbeat ip route add 172.16.40.0/24 via 192.168.30.254 dev eth0 # packetbeat --> r2_r3_nw via r3
 
 # G. Setup OpenVPN tunnel between c2 and c4 with VPN Pivoting
 docker exec d1 openvpn --genkey --secret static-OpenVPN.key
