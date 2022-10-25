@@ -16,3 +16,4 @@ COPY ./Attacks/Execution/50531.rb ./Attacks/Execution/MsfAutoExploit.rc ./
 
 #Copy for credential access exploit automated
 COPY ./Attacks/Credential_Access/Auto_FTP.py ./
+COPY ./Attacks/Credential_Access/test.txt ./
