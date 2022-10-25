@@ -8,10 +8,12 @@ RUN rm /etc/proftpd/proftpd.conf
 ADD ./ftp_config/proftpd.conf /etc/proftpd/proftpd.conf
 
 RUN echo '/bin/false' >> /etc/shells
-RUN useradd sysengineer -d /home/sysengineer -s /bin/false
-RUN echo 'sysengineer':'james' | chpasswd
+RUN useradd james -d /home/passsecure -s /bin/false
+RUN echo 'james':'Bond007' | chpasswd
 RUN mkdir /home/passsecure
 RUN chown -R sysengineer:sysengineer home/passsecure
+RUN echo "2021 PassSecure Q3 Financial Records" > /home/passsecure/FinanceRecords
+RUN echo "2021 PassSecure Q4 Financial Records" > /home/passsecure/FinanceRecords
 RUN echo "2022 PassSecure Q1 Financial Records" > /home/passsecure/FinanceRecords
 
 WORKDIR /
