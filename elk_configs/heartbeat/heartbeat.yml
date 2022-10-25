@@ -39,6 +39,24 @@ heartbeat.monitors:
     - logstash
     
 - type: icmp
+  name: FTP Server Server Alive Status
+  schedule: '@every 5s'
+  hosts:
+    - '10.10.10.3'
+    
+- type: icmp
+  name: Internal Network Router Server Alive Status
+  schedule: '@every 5s'
+  hosts:
+    - '172.16.40.3'
+    
+- type: icmp
+  name: DMZ Router Server Alive Status
+  schedule: '@every 5s'
+  hosts:
+    - '10.10.10.254'
+    
+- type: icmp
   name: ELK Router Server Alive Status
   schedule: '@every 5s'
   hosts:
