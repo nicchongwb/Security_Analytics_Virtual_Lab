@@ -19,7 +19,7 @@ services:
     ports:
       - "8888:80"
 
-  # SuiteCRM
+  # FTP Server
   s2:
     image: ftp
     container_name: s2
