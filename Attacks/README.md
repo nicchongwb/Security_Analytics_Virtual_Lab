@@ -60,7 +60,7 @@ cd /vagrant/Attacks/Exfiltration
 ./exfiltration_setup.sh
 
 # During this stage, attacker should have root in S1
-./exfiltration_s1.sh # Run this in s1 root shell --> script is located in root / dir
+./exfiltration_s1.sh # Run this in s1 root shell --> script is located in the / directory
 ./exfiltration_k1.sh # Run this at k1 root directory
 ```
 
