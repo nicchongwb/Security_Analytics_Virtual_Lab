@@ -12,9 +12,9 @@ RUN useradd james -d /home/passsecure -s /bin/false
 RUN echo 'james':'Bond007' | chpasswd
 RUN mkdir /home/passsecure
 RUN chown -R james:james home/passsecure
-RUN echo "2021 PassSecure Q3 Financial Records" > /home/passsecure/FinanceRecords
-RUN echo "2021 PassSecure Q4 Financial Records" > /home/passsecure/FinanceRecords
-RUN echo "2022 PassSecure Q1 Financial Records" > /home/passsecure/FinanceRecords
+RUN echo "2020 PassSecure Financial Records" > /home/passsecure/FinanceRecords2020Archive
+RUN echo "2021 PassSecure Financial Records" > /home/passsecure/FinanceRecords2021Archive
+RUN echo "2022 PassSecure Q1 Financial Records" > /home/passsecure/FinanceRecords2022
 
 WORKDIR /
 COPY ./elk_configs/setup_filebeat.sh ./elk_configs/filebeat/filebeat.yml ./
