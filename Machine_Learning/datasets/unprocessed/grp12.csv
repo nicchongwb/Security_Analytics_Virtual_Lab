@@ -1,0 +1,22 @@
+@timestamp,agent.type,destination.bytes,destination.ip,destination.port,event.type,host.ip,host.os.version,network.packets,network.transport,network.type,source.ip,source.port,host.name,bytes_in,destination.mac
+"Oct 24, 2022 @ 22:20:00.003",packetbeat,1.4KB,18.183.214.29,21,"connection, end",172.16.0.9,22.04.1 LTS (Jammy Jellyfish),35,tcp,ipv4,172.16.0.9,50124,6502fff7073b,958B,02:42:4f:a1:d7:48
+"Oct 24, 2022 @ 22:19:50.006",packetbeat,1.4KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),35,tcp,ipv4,172.16.0.9,50124,6502fff7073b,958B,02:42:4f:a1:d7:48
+"Oct 24, 2022 @ 22:19:40.006",packetbeat,1.4KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),35,tcp,ipv4,172.16.0.9,50124,6502fff7073b,958B,02:42:4f:a1:d7:48
+"Oct 24, 2022 @ 22:19:30.002",packetbeat,1.4KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),35,tcp,ipv4,172.16.0.9,50124,6502fff7073b,958B,02:42:4f:a1:d7:48
+"Oct 24, 2022 @ 22:19:20.003",packetbeat,1.4KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),35,tcp,ipv4,172.16.0.9,50124,6502fff7073b,958B,02:42:4f:a1:d7:48
+"Oct 24, 2022 @ 22:19:10.004",packetbeat,1.4KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),35,tcp,ipv4,172.16.0.9,50124,6502fff7073b,958B,02:42:4f:a1:d7:48
+"Oct 23, 2022 @ 23:59:30.005",packetbeat,1.4KB,18.183.214.29,21,"connection, end",172.16.0.9,22.04.1 LTS (Jammy Jellyfish),39,tcp,ipv4,172.16.0.9,36404,129e4f27eaec,1.1KB,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 23:59:20.003",packetbeat,1.4KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),39,tcp,ipv4,172.16.0.9,36404,129e4f27eaec,1.1KB,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 23:59:10.002",packetbeat,1.4KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),39,tcp,ipv4,172.16.0.9,36404,129e4f27eaec,1.1KB,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 23:59:00.002",packetbeat,1.4KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),39,tcp,ipv4,172.16.0.9,36404,129e4f27eaec,1.1KB,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 23:58:50.004",packetbeat,1.2KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),34,tcp,ipv4,172.16.0.9,36404,129e4f27eaec,965B,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 23:58:40.003",packetbeat,774B,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),21,tcp,ipv4,172.16.0.9,36404,129e4f27eaec,599B,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 23:58:30.004",packetbeat,774B,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),21,tcp,ipv4,172.16.0.9,36404,129e4f27eaec,599B,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 22:15:30.003",packetbeat,1.5KB,18.183.214.29,21,"connection, end",172.16.0.9,22.04.1 LTS (Jammy Jellyfish),42,tcp,ipv4,172.16.0.9,59566,129e4f27eaec,1.2KB,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 22:15:20.002",packetbeat,1.5KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),42,tcp,ipv4,172.16.0.9,59566,129e4f27eaec,1.2KB,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 22:15:10.003",packetbeat,1.5KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),42,tcp,ipv4,172.16.0.9,59566,129e4f27eaec,1.2KB,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 22:15:00.005",packetbeat,1.5KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),42,tcp,ipv4,172.16.0.9,59566,129e4f27eaec,1.2KB,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 22:14:50.002",packetbeat,1.2KB,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),34,tcp,ipv4,172.16.0.9,59566,129e4f27eaec,965B,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 22:14:40.004",packetbeat,774B,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),21,tcp,ipv4,172.16.0.9,59566,129e4f27eaec,599B,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 22:14:30.003",packetbeat,274B,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),9,tcp,ipv4,172.16.0.9,59566,129e4f27eaec,306B,02:42:e0:b4:32:53
+"Oct 23, 2022 @ 22:14:20.002",packetbeat,132B,18.183.214.29,21,connection,172.16.0.9,22.04.1 LTS (Jammy Jellyfish),5,tcp,ipv4,172.16.0.9,59566,129e4f27eaec,182B,02:42:e0:b4:32:53
